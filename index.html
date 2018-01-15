@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>k means</title>
+    <link href="themes/prism.css" rel="stylesheet" />
+    <style>
+        div.code-image-pair {
+            overflow: auto;
+        }
+        div.code-image-pair > pre {
+            float: left;
+        }
+        div.code-image-pair > img {
+            float: right;
+        }
+    </style>
+</head>
+
+<body style="background-color: #f5f2f0;">
+    <div hidden>http://prismjs.com/download.html?themes=prism-solarizedlight&languages=markup+css+clike+javascript+c+cpp+python</div>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js"></script>
+    <script src="prism.js"></script>
+    <h1>i'm going to implement k-means to compress an image</h1>
+    my roommate described the idea to me the other day and said that I should try it myself
+    <h2>k means is</h2>
+    <p>an iterative algorithm for clustering</p>
+    <h3>given</h3>
+    <ul>a bunch of points</ul>
+    <ul>k = target number number of clusters</ul>
+    <h3>do</h3>
+    <ol>randomly pick a starting location for each of the k cluster centers</ol>
+    <ol>for each point in the graph determine which cluster it's closest to</ol>
+    <ol>move each cluster point to the center of the points that belong to that cluster</ol>
+    <p>hmm, that doesn't seem to be a very clear explination</p>
+
+    <h2>pictures and text</h2>
+    <p>this is the picture that I want to compress</p>
+    <p>it would be smaller if it used fewer colors</p>
+    <p>i'm going to use k-means to determine what colors it should use</p>
+    <a href="https://www.pexels.com/photo/close-up-view-colorful-candy-chocolate-65547/">
+        <img src="resources/mnms.jpg" alt="Photo by Caio Resende from Pexels" height=200>
+    </a>
+
+    <h3>I wonder if i can make a basic scatter plot</h3>
+    <div class="code-image-pair">
+
+    <pre class="line-numbers">
+            <code class="language-python">
+                import random
+                import numpy as np
+                from matplotlib import pyplot as plt
+
+                xs = [random.random() for x in range(10)]
+                ys = [random.random() for x in range(10)]
+                plt.scatter(xs, ys)
+                plt.show()
+            </code>
+        </pre>
+        <img height=300 src="resources/k_means.1.png" />
+    </div>
+    <p>it looks like i can</p>
+
+    <h3>i wonder if i can add colors to the points</h3>
+    <div class="code-image-pair">
+
+    <pre class="line-numbers">
+            <code class="language-python">
+                import random
+                import numpy as np
+                from matplotlib import pyplot as plt
+
+                xs = [random.random() for x in range(10)]
+                ys = [random.random() for x in range(10)]
+                plt.scatter(xs, ys, c="blue")
+                xs = [random.random() for x in range(10)]
+                ys = [random.random() for x in range(10)]
+                plt.scatter(xs, ys, c="green")
+                plt.show()
+            </code>
+        </pre>
+        <img src="resources/k_means.2.png" height=300/>
+    </div>
+    <p>it looks like i can</p>
+
+    <h3>i wonder if i can plot in 3d</h3>
+<div class="code-image-pair">
+
+    <pre class="line-numbers">
+        <code class="language-python">
+            import random
+            import numpy as np
+            from matplotlib import pyplot as plt
+            from mpl_toolkits.mplot3d import Axes3D
+
+            fig = plt.figure()
+            ax = fig.add_subplot(111, projection="3d")
+
+            xs = [random.random() for x in range(10)]
+            ys = [random.random() for x in range(10)]
+            zs = [random.random() for x in range(10)]
+            ax.scatter(xs, ys, zs)
+            plt.show()
+        </code>
+    </pre>
+    <img src="resources/k_means.3.png" height=300/>
+</div>
+    <p>it looks like i can</p>
+    <p>I don't know what the 111 is for though</p>
+
+    <h3>100 points, the rendering lags on my computer</h3>
+<div class="code-image-pair">
+
+
+    <pre class="line-numbers">
+        <code class="language-python">
+import random
+import numpy as np
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection="3d")
+
+length = 100
+for color in ["red", "green", "blue"]:
+    xs = [random.random() for x in range(length)]
+    ys = [random.random() for x in range(length)]
+    zs = [random.random() for x in range(length)]
+    ax.scatter(xs, ys, zs, c=color)
+plt.show()
+</code>
+</pre>
+    <img src="resources/k_means.4.png" width=400/>
+</div>
+
+    <h3>I wonder if I can render a little video offline instead of viewing it in real time</h3>
+    <p>I set the view angle for the plot and then save a screenshot to a file</p>
+    <p>i do this a bunch of times and stitch the pics together into a gif</p>
+<div class="code-image-pair">
+
+
+    <pre class="line-numbers">
+        <code class="language-python">
+import random, math
+import numpy as np
+
+import matplotlib
+matplotlib.use('Agg')
+
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+precision = 10
+length = 10
+for color in ["red", "green", "blue"]:
+    xs = [random.random() for x in range(length)]
+    ys = [random.random() for x in range(length)]
+    zs = [random.random() for x in range(length)]
+    ax.scatter(xs, ys, zs, c=color)
+for r in [x / precision for x in range(int(2*math.pi*precision))]:
+    ax.view_init(30 + math.sin(r), 30 + math.cos(r+180))
+    fig.savefig('/tmp/plotPic{:04d}.png'.format(int(r)))
+    plt.draw()
+</code>
+</pre>
+    <img src="resources/plotPics.9.gif" width=400/>
+</div>
+    <p>this is how I stitched the pics together into a gif</p>
+
+    <pre class="line-numbers">
+        <code class="language-bash">
+convert -delay 10 *.png plotPics9.gif
+</code>
+</pre>
+
+    <h3>better</h3>
+    <p>the previous example has a bug where I'm still using degrees instead of radians for the view rotation so it doesn't go
+        in a circle but more of an oval</p>
+<div  class="code-image-pair">
+
+    <pre class="line-numbers">
+        <code class="language-python">
+import subprocess, math
+from numpy.random import random
+
+import matplotlib
+matplotlib.use('Agg')
+
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+def genPoints(length):
+    for color in ["red", "green", "blue"]:
+        xs = random(length)
+        ys = random(length)
+        zs = random(length)
+    return (xs, ys, zs)
+
+precision = 2
+rotationScale = 4
+length = 30
+xs, ys, zs = genPoints(length)
+ax.scatter(xs, ys, zs)
+steps = [x / precision for x in range(int(2*math.pi*precision))]
+for i,r in enumerate(steps):
+    view_init_x = 30 + math.sin(r) * rotationScale
+    view_init_y = 30 + math.cos(r+math.pi) * rotationScale
+    ax.view_init(view_init_x, view_init_y)
+    fig.savefig('/tmp/plotPic{:04d}.png'.format(i))
+
+</code>
+</pre>
+    <img src="resources/plotPics.11.gif" height=300/>
+</div>
+    <p>this is how I stitched the pics together into a gif</p>
+
+    <pre class="line-numbers">
+        <code class="language-bash">
+convert -delay 10 *.png plotPics9.gif
+</code>
+</pre>
+
+    <h3>let's open a picture and plot the points</h3>
+    <p>this is way too slow</p>
+<div class=code-image-pair>
+
+    <pre class="line-numbers">
+        <code class="language-python">
+import subprocess, math
+import numpy
+from numpy.random import random
+from PIL import Image
+
+import matplotlib
+matplotlib.use('Agg')
+
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+image = Image.open("mnms.jpg")
+
+precision = 1
+rotationScale = 2
+length = 100
+color = "black"
+
+print(image.getdata(0))
+
+ax.scatter(image.getdata(0), image.getdata(1), image.getdata(2), s=1)
+ax.set_xlabel("red")
+ax.set_ylabel("green")
+ax.set_zlabel("blue")
+
+total_number_of_frames = int(2*math.pi*precision)
+for i,r in enumerate([x / precision for x in range(int(2*math.pi*precision))]):
+    print("{:2.2f}%".format(i/total_number_of_frames*100))
+    ax.view_init(30 + math.sin(r) * rotationScale, 30 + math.cos(r+math.pi) * rotationScale)
+    fig.savefig('/tmp/plotPic{:04d}.png'.format(i))
+</code>
+</pre>
+    <img src="resources/plotPics.14.gif" height=400/>
+</div>
+
+    <h3>gnuplot data from file</h3>
+    <p>write the data to a file and open it with gnuplot</p>
+    <p>it is way faster to generate the gif, it glitches though and I'm not sure why</p>
+<div class=code-image-pair>
+    <pre class="line-numbers" data-src="src/k_means.py">
+</pre>
+    <img src="resources/rot3.gif" height=400/>
+</div>
+
+    <p>let's have three distinct groups of points</p>
+    <p>and then mark their averages</p>
+    <p>first step to that is to make a function that</p>
+    <p>generates the points, I'll call the function</p>
+    <p>three times and scale the points and translate</p>
+    <p>them to a quarter of the final graph</p>
+    <p>numpy arrays support dividing by a scalar</p>
+    <p>(and i want to use numpy because it sounds cool)</p>
+    <p>so I'll use numpy</p>
+    <p>i fixed the rotation to be a circle, i still had 180 degrees</p>
+    <p>as the offset when it's in radians</p>
+</body>
+
+</html>
