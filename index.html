@@ -136,7 +136,7 @@ convert -delay 10 *.png plotPics9.gif
 <p>and I bet I can get some pretty graphs out of this</p>
 <h4>step one. set up googletest</h4>
 <p>i want to jump into running the code as soon as i finish each piece so I'll use googletest to run my nugets of code</p>
-<pre class="line-numbers">
+<pre>
     <code class="language-bash">
     mkdir build
     cd build
@@ -145,7 +145,7 @@ convert -delay 10 *.png plotPics9.gif
     test/kmeansTest
 </code>
 </pre>
-<pre class="line-numbers">
+<pre>
     <code class="language-cpp">
             #include "gtest/gtest.h"
             #include "gmock/gmock.h"
@@ -189,6 +189,20 @@ convert -delay 10 *.png plotPics9.gif
              1 FAILED TEST
     </code>
 </pre>
+<p>I made a point type and a function to subtract them</p>
+<pre>
+    <code class="language-cpp">
+template &lt;int n&gt;
+using Point = array&lt;int, n&gt;;
+
+auto minus(auto a, auto b) {
+    decltype(a) result;
+    std::transform(a.begin(), a.end(), b.begin(), result.begin(), std::minus&lt;int&gt;());
+    return result;
+}
+    </code>
+</pre>
+
 
 </body>
 
