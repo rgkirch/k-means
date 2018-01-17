@@ -130,17 +130,66 @@ convert -delay 10 *.png plotPics9.gif
     <img src="resources/rot3.gif" height=400/>
 </div>
 
-    <p>let's have three distinct groups of points</p>
-    <p>and then mark their averages</p>
-    <p>first step to that is to make a function that</p>
-    <p>generates the points, I'll call the function</p>
-    <p>three times and scale the points and translate</p>
-    <p>them to a quarter of the final graph</p>
-    <p>numpy arrays support dividing by a scalar</p>
-    <p>(and i want to use numpy because it sounds cool)</p>
-    <p>so I'll use numpy</p>
-    <p>i fixed the rotation to be a circle, i still had 180 degrees</p>
-    <p>as the offset when it's in radians</p>
+<h3>do the calculation in c++</h3>
+<p>let's get some speed. it'll be pretty easy to implement this in c++ and then we'll get to compare the speed to python</p>
+<p>so far, we've only seen that actually drawing the plot is slow, i don't have an idea of how fast the algorithm runs but I have a hunch that it's going to be slow</p>
+<p>and I bet I can get some pretty graphs out of this</p>
+<h4>step one. set up googletest</h4>
+<p>i want to jump into running the code as soon as i finish each piece so I'll use googletest to run my nugets of code</p>
+<pre class="line-numbers">
+    <code class="language-bash">
+    mkdir build
+    cd build
+    cmake ..
+    make kmeansTest
+    test/kmeansTest
+</code>
+</pre>
+<pre class="line-numbers">
+    <code class="language-cpp">
+            #include "gtest/gtest.h"
+            #include "gmock/gmock.h"
+            #include "kmeans.hpp"
+            
+            TEST(thisPasses, helloHello) {
+                ASSERT_EQ("hello", "hello");
+            }
+            TEST(thisFails,helloWorld) {
+                ASSERT_EQ("hello", "world");
+            }
+    </code>
+</pre>
+<pre>
+    <code class="language-bash">
+            Running main() from gtest_main.cc
+            [==========] Running 2 tests from 2 test cases.
+            [----------] Global test environment set-up.
+            [----------] 1 test from thisPasses
+            [ RUN      ] thisPasses.helloHello
+            [       OK ] thisPasses.helloHello (0 ms)
+            [----------] 1 test from thisPasses (0 ms total)
+            
+            [----------] 1 test from thisFails
+            [ RUN      ] thisFails.helloWorld
+            /mnt/c/Users/richie/Documents/github/k-means/test/kmeansTest.cpp:14: Failure
+            Expected equality of these values:
+              "hello"
+                Which is: 0x43f9bf
+              "world"
+                Which is: 0x43fa11
+            [  FAILED  ] thisFails.helloWorld (0 ms)
+            [----------] 1 test from thisFails (1 ms total)
+            
+            [----------] Global test environment tear-down
+            [==========] 2 tests from 2 test cases ran. (1 ms total)
+            [  PASSED  ] 1 test.
+            [  FAILED  ] 1 test, listed below:
+            [  FAILED  ] thisFails.helloWorld
+            
+             1 FAILED TEST
+    </code>
+</pre>
+
 </body>
 
 </html>
