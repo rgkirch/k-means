@@ -22,9 +22,14 @@ auto minus(auto a, auto b) {
 // }
 
 double distance(auto a, auto b) {
+    struct SumSquares {
+        int operator()(int n) {
+            sum += std::pow(n, 2);
+        }
+        double sum = 0.0;
+    };
     auto result = minus(a, b);
-    std::for_each(result.begin(), result.end(), [](auto b){return std::pow(b, 2); });
-    auto sum = std::accumulate(result.begin(), result.end(), 0);
+    auto sum = std::for_each(result.begin(), result.end(), SumSquares()).sum;
     return std::sqrt(sum);
 }
 

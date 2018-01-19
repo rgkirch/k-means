@@ -2,6 +2,8 @@
 #include "gmock/gmock.h"
 #include "kmeans.hpp"
 
+using ::testing::DoubleEq;
+
 TEST(minus, twoPoints) {
     Point<3> a {1,3,9};
     Point<3> b {0,4,12};
@@ -22,16 +24,16 @@ TEST(distance, one) {
     Point<1> a {0};
     Point<1> b {0};
     auto result = distance(a,b);
-    auto expected {0};
-    ASSERT_EQ(expected, result);
+    double expected {0};
+    ASSERT_NEAR(expected, result, 0.01);
 }
 
 TEST(distance, two) {
     Point<1> a {1};
     Point<1> b {1};
     auto result = distance(a,b);
-    auto expected {0};
-    ASSERT_EQ(expected, result);
+    double expected {0};
+    ASSERT_NEAR(expected, result, 0.01);
 }
 
 TEST(distance, three) {
@@ -39,13 +41,29 @@ TEST(distance, three) {
     Point<5> b {-2,-1,0,1,2};
     auto result = distance(a,b);
     auto expected {std::sqrt(60)};
-    ASSERT_EQ(expected, result);
+    ASSERT_NEAR(expected, result, 0.01);
 }
 
 TEST(distance, four) {
+    Point<2> a {-51, 37};
+    Point<2> b {86, -40};
+    auto result = distance(a,b);
+    double expected = 157.1559;
+    ASSERT_NEAR(expected, result, 0.01);
+}
+
+TEST(distance, five) {
     Point<2> a {-52, 38};
     Point<2> b {87, -41};
     auto result = distance(a,b);
-    double expected = 1598.81;
-    ASSERT_EQ(expected, result);
+    double expected = 159.8812;
+    ASSERT_NEAR(expected, result, 0.01);
+}
+
+TEST(distance, six) {
+    Point<2> a {100, 100};
+    Point<2> b {0, 0};
+    auto result = distance(a,b);
+    double expected = 141.421;
+    ASSERT_NEAR(result, expected, 0.01);
 }
