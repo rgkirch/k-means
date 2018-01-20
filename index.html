@@ -8,10 +8,12 @@
         div.code-image-pair {
             overflow: auto;
         }
-        div.code-image-pair > pre {
+
+        div.code-image-pair>pre {
             float: left;
         }
-        div.code-image-pair > img {
+
+        div.code-image-pair>img {
             float: right;
         }
     </style>
@@ -45,7 +47,7 @@
     <h3>I wonder if i can make a basic scatter plot</h3>
     <div class="code-image-pair">
 
-    <pre class="line-numbers" data-src="src/basic_scatter.py">
+        <pre class="line-numbers" data-src="src/basic_scatter.py">
         </pre>
         <img height=300 src="resources/k_means.1.png" />
     </div>
@@ -54,39 +56,39 @@
     <h3>i wonder if i can add colors to the points</h3>
     <div class="code-image-pair">
 
-    <pre class="line-numbers" data-src="src/add_colors.py">
+        <pre class="line-numbers" data-src="src/add_colors.py">
         </pre>
         <img src="resources/k_means.2.png" height=300/>
     </div>
     <p>it looks like i can</p>
 
     <h3>i wonder if i can plot in 3d</h3>
-<div class="code-image-pair">
+    <div class="code-image-pair">
 
-    <pre class="line-numbers" data-src="src/first_3d.py">
+        <pre class="line-numbers" data-src="src/first_3d.py">
     </pre>
-    <img src="resources/k_means.3.png" height=300/>
-</div>
+        <img src="resources/k_means.3.png" height=300/>
+    </div>
     <p>it looks like i can</p>
     <p>I don't know what the 111 is for though</p>
 
     <h3>100 points, the rendering lags on my computer</h3>
-<div class="code-image-pair">
+    <div class="code-image-pair">
 
-    <pre class="line-numbers" data-src="src/render_lag.py">
+        <pre class="line-numbers" data-src="src/render_lag.py">
 </pre>
-    <img src="resources/k_means.4.png" width=400/>
-</div>
+        <img src="resources/k_means.4.png" width=400/>
+    </div>
 
     <h3>I wonder if I can render a little video offline instead of viewing it in real time</h3>
     <p>I set the view angle for the plot and then save a screenshot to a file</p>
     <p>i do this a bunch of times and stitch the pics together into a gif</p>
-<div class="code-image-pair">
+    <div class="code-image-pair">
 
-    <pre class="line-numbers" data-src="src/render_offline.py">
+        <pre class="line-numbers" data-src="src/render_offline.py">
 </pre>
-    <img src="resources/plotPics.9.gif" width=400/>
-</div>
+        <img src="resources/plotPics.9.gif" width=400/>
+    </div>
     <p>this is how I stitched the pics together into a gif</p>
 
     <pre class="line-numbers">
@@ -98,12 +100,12 @@ convert -delay 10 *.png plotPics9.gif
     <h3>better</h3>
     <p>the previous example has a bug where I'm still using degrees instead of radians for the view rotation so it doesn't go
         in a circle but more of an oval</p>
-<div  class="code-image-pair">
+    <div class="code-image-pair">
 
-    <pre class="line-numbers" data-src="src/better.py">
+        <pre class="line-numbers" data-src="src/better.py">
 </pre>
-    <img src="resources/plotPics.11.gif" height=300/>
-</div>
+        <img src="resources/plotPics.11.gif" height=300/>
+    </div>
     <p>this is how I stitched the pics together into a gif</p>
 
     <pre class="line-numbers">
@@ -114,29 +116,30 @@ convert -delay 10 *.png plotPics9.gif
 
     <h3>open a picture and plot the points</h3>
     <p>this is way too slow</p>
-<div class=code-image-pair>
+    <div class=code-image-pair>
 
-    <pre class="line-numbers" data-src="src/open_a_pic_and_plot_points.py">
+        <pre class="line-numbers" data-src="src/open_a_pic_and_plot_points.py">
 </pre>
-    <img src="resources/plotPics.14.gif" height=400/>
-</div>
+        <img src="resources/plotPics.14.gif" height=400/>
+    </div>
 
     <h3>gnuplot data from file</h3>
     <p>write the data to a file and open it with gnuplot</p>
     <p>it is way faster to generate the gif, it glitches though and I'm not sure why</p>
-<div class=code-image-pair>
-    <pre class="line-numbers" data-src="src/gnu_plot_data_from_file.py"></pre>
-    <pre class="line-numbers" data-src="src/k-means.gnuplot"></pre>
-    <img src="resources/rot3.gif" height=400/>
-</div>
+    <div class=code-image-pair>
+        <pre class="line-numbers" data-src="src/gnu_plot_data_from_file.py"></pre>
+        <pre class="line-numbers" data-src="src/k-means.gnuplot"></pre>
+        <img src="resources/rot3.gif" height=400/>
+    </div>
 
-<h3>do the calculation in c++</h3>
-<p>let's get some speed. it'll be pretty easy to implement this in c++ and then we'll get to compare the speed to python</p>
-<p>so far, we've only seen that actually drawing the plot is slow, i don't have an idea of how fast the algorithm runs but I have a hunch that it's going to be slow</p>
-<p>and I bet I can get some pretty graphs out of this</p>
-<h4>step one. set up googletest</h4>
-<p>i want to jump into running the code as soon as i finish each piece so I'll use googletest to run my nugets of code</p>
-<pre>
+    <h3>do the calculation in c++</h3>
+    <p>let's get some speed. it'll be pretty easy to implement this in c++ and then we'll get to compare the speed to python</p>
+    <p>so far, we've only seen that actually drawing the plot is slow, i don't have an idea of how fast the algorithm runs but
+        I have a hunch that it's going to be slow</p>
+    <p>and I bet I can get some pretty graphs out of this</p>
+    <h4>step one. set up googletest</h4>
+    <p>i want to jump into running the code as soon as i finish each piece so I'll use googletest to run my nugets of code</p>
+    <pre>
     <code class="language-bash">
     mkdir build
     cd build
@@ -145,7 +148,7 @@ convert -delay 10 *.png plotPics9.gif
     test/kmeansTest
 </code>
 </pre>
-<pre>
+    <pre>
     <code class="language-cpp">
             #include "gtest/gtest.h"
             #include "gmock/gmock.h"
@@ -159,7 +162,7 @@ convert -delay 10 *.png plotPics9.gif
             }
     </code>
 </pre>
-<pre>
+    <pre>
     <code class="language-bash">
             Running main() from gtest_main.cc
             [==========] Running 2 tests from 2 test cases.
@@ -189,8 +192,8 @@ convert -delay 10 *.png plotPics9.gif
              1 FAILED TEST
     </code>
 </pre>
-<p>I made a point type and a function to subtract them</p>
-<pre>
+    <p>I made a point type and a function to subtract them</p>
+    <pre>
     <code class="language-cpp">
 template &lt;int n&gt;
 using Point = array&lt;int, n&gt;;
@@ -200,19 +203,39 @@ auto minus(auto a, auto b) {
     transform(begin(a), end(a), begin(b), begin(result), std::minus&lt;int&gt;());
     return result;
 }
+auto plus(auto a, auto b) {
+    decltype(a) result;
+    transform(begin(a), end(a), begin(b), begin(result), std::plus&lt;int&gt;());
+    return result;
+}
     </code>
 </pre>
-<p>I made a distance function</p>
-<pre class="language-cpp">
-    <code>
-        double distance(auto a, auto b) {
-            auto f = [](double a, double b) { return a + pow(b, 2); };
-            auto result = minus(a, b);
-            auto sum = accumulate(begin(result), end(result), 0, f);
-            return sqrt(sum);
-        }
-    </code>
-</pre>
+    <p>I made a distance function</p>
+    <pre class="language-cpp">
+        <code>
+            double distance(auto a, auto b) {
+                auto f = [](double a, double b) { return a + pow(b, 2); };
+                auto result = minus(a, b);
+                auto sum = accumulate(begin(result), end(result), 0, f);
+                return sqrt(sum);
+            }
+        </code>
+    </pre>
+    <p>I made a function to find the average of a cluster of points</p>
+    <pre class="language-cpp">
+        <code>
+            template &lt;unsigned long n, unsigned long x&gt;
+            auto average(array&lt;Point&lt;auto, n&gt;, x&gt; arr) {
+                auto init = arr[0];
+                auto divide = [=](auto a) -&gt; double { return (double)a / arr.size(); };
+                auto p = [](auto a, auto b) { return plus(a, b); };
+                auto acc = accumulate(begin(arr) + 1, end(arr), init, p);
+                Point&lt;double, n&gt; result;
+                transform(begin(acc), end(acc), begin(result), divide);
+                return result;
+            }
+        </code>
+    </pre>
 
 
 </body>
