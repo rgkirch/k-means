@@ -8,7 +8,9 @@
 using std::accumulate;
 using std::array;
 using std::begin;
+using std::cout;
 using std::end;
+using std::endl;
 using std::pow;
 using std::sqrt;
 using std::transform;
@@ -17,7 +19,8 @@ using std::vector;
 template <typename a, int b>
 using Point = array<a, b>;
 
-auto minus(auto a, auto b)
+template <typename F>
+auto pointTransform(F f, auto a, auto b)
 {
     static_assert(std::tuple_size<decltype(a)>::value > 0,
                   "array length must be greater than zero");
@@ -25,23 +28,14 @@ auto minus(auto a, auto b)
                       std::tuple_size<decltype(b)>::value,
                   "points must be of the same dimensionality");
     decltype(a) result;
-    transform(begin(a), end(a), begin(b), begin(result), std::minus<int>());
+    transform(begin(a), end(a), begin(b), begin(result), f);
     return result;
 }
 
 // todo - don't require that the are the same length
 // expand the shorter one with zeroes
-auto plus(auto a, auto b)
-{
-    static_assert(std::tuple_size<decltype(a)>::value > 0,
-                  "array length must be greater than zero");
-    static_assert(std::tuple_size<decltype(a)>::value ==
-                      std::tuple_size<decltype(b)>::value,
-                  "points must be of the same dimensionality");
-    decltype(a) result;
-    transform(begin(a), end(a), begin(b), begin(result), std::plus<int>());
-    return result;
-}
+auto minus = [](auto a, auto b) { return pointTransform(std::minus<int>(), a, b); };
+auto plus = [](auto a, auto b) { return pointTransform(std::plus<int>(), a, b); };
 
 double distance(auto a, auto b)
 {
@@ -63,8 +57,7 @@ auto average(array<Point<auto, n>, x> arr)
                   "array length must be greater than zero");
     auto init = arr[0];
     auto divide = [=](auto a) -> double { return (double)a / arr.size(); };
-    auto p = [](auto a, auto b) { return plus(a, b); };
-    auto acc = accumulate(begin(arr) + 1, end(arr), init, p);
+    auto acc = accumulate(begin(arr) + 1, end(arr), init, plus);
     Point<double, n> result;
     transform(begin(acc), end(acc), begin(result), divide);
     return result;
