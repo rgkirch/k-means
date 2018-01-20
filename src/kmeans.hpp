@@ -39,8 +39,8 @@ double distance(auto a, auto b)
     return sqrt(sum);
 }
 
-template <typename A, unsigned long n, unsigned long x>
-auto average(array<Point<A, n>, x> arr)
+template <unsigned long n, unsigned long x>
+auto average(array<Point<auto, n>, x> arr)
 {
     auto init = arr[0];
     auto divide = [=](auto a) -> double { return (double)a / arr.size(); };
