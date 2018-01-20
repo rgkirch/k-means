@@ -5,29 +5,50 @@
 #include <vector>
 #include <array>
 
+using std::accumulate;
 using std::array;
-using std::vector;
 using std::begin;
 using std::end;
-using std::transform;
 using std::pow;
-using std::accumulate;
 using std::sqrt;
+using std::transform;
+using std::vector;
 
-template <int n>
-using Point = array<int, n>;
+template <typename a, int b>
+using Point = array<a, b>;
 
-auto minus(auto a, auto b) {
+auto minus(auto a, auto b)
+{
     decltype(a) result;
     transform(begin(a), end(a), begin(b), begin(result), std::minus<int>());
     return result;
 }
 
-double distance(auto a, auto b) {
+auto plus(auto a, auto b)
+{
+    decltype(a) result;
+    transform(begin(a), end(a), begin(b), begin(result), std::plus<int>());
+    return result;
+}
+
+double distance(auto a, auto b)
+{
     auto f = [](double a, double b) { return a + pow(b, 2); };
     auto result = minus(a, b);
     auto sum = accumulate(begin(result), end(result), 0, f);
     return sqrt(sum);
+}
+
+template <typename A, unsigned long n, unsigned long x>
+auto average(array<Point<A, n>, x> arr)
+{
+    auto init = arr[0];
+    auto divide = [=](auto a) -> double { return (double)a / arr.size(); };
+    auto p = [](auto a, auto b) { return plus(a, b); };
+    auto acc = accumulate(begin(arr) + 1, end(arr), init, p);
+    Point<double, n> result;
+    transform(begin(acc), end(acc), begin(result), divide);
+    return result;
 }
 
 // auto closestCluster(auto point, auto clusters) {
