@@ -19,13 +19,25 @@ using Point = array<a, b>;
 
 auto minus(auto a, auto b)
 {
+    static_assert(std::tuple_size<decltype(a)>::value > 0,
+                  "array length must be greater than zero");
+    static_assert(std::tuple_size<decltype(a)>::value ==
+                      std::tuple_size<decltype(b)>::value,
+                  "points must be of the same dimensionality");
     decltype(a) result;
     transform(begin(a), end(a), begin(b), begin(result), std::minus<int>());
     return result;
 }
 
+// todo - don't require that the are the same length
+// expand the shorter one with zeroes
 auto plus(auto a, auto b)
 {
+    static_assert(std::tuple_size<decltype(a)>::value > 0,
+                  "array length must be greater than zero");
+    static_assert(std::tuple_size<decltype(a)>::value ==
+                      std::tuple_size<decltype(b)>::value,
+                  "points must be of the same dimensionality");
     decltype(a) result;
     transform(begin(a), end(a), begin(b), begin(result), std::plus<int>());
     return result;
@@ -33,6 +45,11 @@ auto plus(auto a, auto b)
 
 double distance(auto a, auto b)
 {
+    static_assert(std::tuple_size<decltype(a)>::value > 0,
+                  "array length must be greater than zero");
+    static_assert(std::tuple_size<decltype(a)>::value ==
+                      std::tuple_size<decltype(b)>::value,
+                  "array length must be greater than zero");
     auto f = [](double a, double b) { return a + pow(b, 2); };
     auto result = minus(a, b);
     auto sum = accumulate(begin(result), end(result), 0, f);
@@ -42,6 +59,8 @@ double distance(auto a, auto b)
 template <unsigned long n, unsigned long x>
 auto average(array<Point<auto, n>, x> arr)
 {
+    static_assert(std::tuple_size<decltype(arr)>::value > 0,
+                  "array length must be greater than zero");
     auto init = arr[0];
     auto divide = [=](auto a) -> double { return (double)a / arr.size(); };
     auto p = [](auto a, auto b) { return plus(a, b); };
