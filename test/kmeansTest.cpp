@@ -6,6 +6,7 @@ using ::testing::DoubleEq;
 using std::array;
 using std::cout;
 using std::endl;
+using std::get;
 
 TEST(minus, twoPoints)
 {
@@ -83,8 +84,8 @@ TEST(averageOfCluster, one)
 {
     array<Point<int, 2>, 4> arr{1, 1, 2, 2, 1, 2, 2, 1};
     auto avg = average(arr);
-    ASSERT_NEAR(avg[0], 1.5, .01);
-    ASSERT_NEAR(avg[1], 1.5, .01);
+    ASSERT_NEAR(get<0>(avg), 1.5, .01);
+    ASSERT_NEAR(get<1>(avg), 1.5, .01);
 }
 
 TEST(averageOfCluster, two)
@@ -94,8 +95,8 @@ TEST(averageOfCluster, two)
                                   1.5, 2.6,
                                   2.7, 1.8};
     auto avg = average(arr);
-    ASSERT_NEAR(avg[0], 1.5, .001);
-    ASSERT_NEAR(avg[1], 1.5, .001);
+    ASSERT_NEAR(get<0>(avg), 1.5, .001);
+    ASSERT_NEAR(get<1>(avg), 1.5, .001);
 }
 
 TEST(averageOfCluster, three)
@@ -104,8 +105,8 @@ TEST(averageOfCluster, three)
                                 5, 0,
                                 0, 5};
     auto avg = average(arr);
-    ASSERT_NEAR(avg[0], (double)5 / 3, .001);
-    ASSERT_NEAR(avg[1], (double)5 / 3, .001);
+    ASSERT_NEAR(get<0>(avg), (double)5 / 3, .001);
+    ASSERT_NEAR(get<1>(avg), (double)5 / 3, .001);
 }
 
 TEST(averageOfCluster, four)
@@ -113,23 +114,23 @@ TEST(averageOfCluster, four)
     array<Point<int, 4>, 2> arr{1, 2, 3, 3,
                                 0, 5, 5, 4};
     auto avg = average(arr);
-    ASSERT_NEAR(avg[0], (double)1 / 2, .001);
-    ASSERT_NEAR(avg[1], (double)7 / 2, .001);
-    ASSERT_NEAR(avg[2], (double)8 / 2, .001);
-    ASSERT_NEAR(avg[3], (double)7 / 2, .001);
+    ASSERT_NEAR(get<0>(avg), (double)1 / 2, .001);
+    ASSERT_NEAR(get<1>(avg), (double)7 / 2, .001);
+    ASSERT_NEAR(get<2>(avg), (double)8 / 2, .001);
+    ASSERT_NEAR(get<3>(avg), (double)7 / 2, .001);
 }
 
 TEST(averageOfCluster, five)
 {
     array<Point<int, 2>, 1> arr{1, 2};
     auto avg = average(arr);
-    ASSERT_NEAR(avg[0], (double)1, .001);
-    ASSERT_NEAR(avg[1], (double)2, .001);
+    ASSERT_NEAR(get<0>(avg), (double)1, .001);
+    ASSERT_NEAR(get<1>(avg), (double)2, .001);
 }
 
 TEST(averageOfCluster, six)
 {
     array<Point<int, 1>, 1> arr{0};
     auto avg = average(arr);
-    ASSERT_NEAR(avg[0], (double)0, .001);
+    ASSERT_NEAR(get<0>(avg), (double)0, .001);
 }
