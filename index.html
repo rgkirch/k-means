@@ -197,7 +197,7 @@ using Point = array&lt;int, n&gt;;
 
 auto minus(auto a, auto b) {
     decltype(a) result;
-    std::transform(a.begin(), a.end(), b.begin(), result.begin(), std::minus&lt;int&gt;());
+    transform(begin(a), end(a), begin(b), begin(result), std::minus&lt;int&gt;());
     return result;
 }
     </code>
@@ -206,27 +206,10 @@ auto minus(auto a, auto b) {
 <pre class="language-cpp">
     <code>
         double distance(auto a, auto b) {
-            struct SumSquares {
-                int operator()(int n) {
-                    sum += std::pow(n, 2);
-                }
-                double sum = 0.0;
-            };
+            auto f = [](double a, double b) { return a + pow(b, 2); };
             auto result = minus(a, b);
-            auto sum = std::for_each(result.begin(), result.end(), SumSquares()).sum;
-            return std::sqrt(sum);
-        }
-    </code>
-</pre>
-<p>is this slower?</p>
-<pre class="language-cpp">
-    <code>
-        double distance(auto a, auto b) {
-            auto f = [](double a, double b) { return a + std::pow(b, 2); };
-            auto result = minus(a, b);
-            std::transform(std::begin(result), std::end(result), std::begin(result), [](int n) { return std::pow(n, 2); });
-            auto sum = std::accumulate(result.begin(), result.end(), 0);
-            return std::sqrt(sum);
+            auto sum = accumulate(begin(result), end(result), 0, f);
+            return sqrt(sum);
         }
     </code>
 </pre>

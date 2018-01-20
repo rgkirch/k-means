@@ -19,13 +19,9 @@ using Point = array<int, n>;
 
 auto minus(auto a, auto b) {
     decltype(a) result;
-    transform(a.begin(), a.end(), b.begin(), result.begin(), std::minus<int>());
+    transform(begin(a), end(a), begin(b), begin(result), std::minus<int>());
     return result;
 }
-
-// auto f(auto point, auto cluster, auto diff) {
-
-// }
 
 double distance(auto a, auto b) {
     auto f = [](double a, double b) { return a + pow(b, 2); };
