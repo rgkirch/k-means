@@ -7,13 +7,19 @@
 
 using std::array;
 using std::vector;
+using std::begin;
+using std::end;
+using std::transform;
+using std::pow;
+using std::accumulate;
+using std::sqrt;
 
 template <int n>
 using Point = array<int, n>;
 
 auto minus(auto a, auto b) {
     decltype(a) result;
-    std::transform(a.begin(), a.end(), b.begin(), result.begin(), std::minus<int>());
+    transform(a.begin(), a.end(), b.begin(), result.begin(), std::minus<int>());
     return result;
 }
 
@@ -22,11 +28,10 @@ auto minus(auto a, auto b) {
 // }
 
 double distance(auto a, auto b) {
-    auto f = [](double a, double b) { return a + std::pow(b, 2); };
+    auto f = [](double a, double b) { return a + pow(b, 2); };
     auto result = minus(a, b);
-    std::transform(std::begin(result), std::end(result), std::begin(result), [](int n) { return std::pow(n, 2); });
-    auto sum = std::accumulate(result.begin(), result.end(), 0);
-    return std::sqrt(sum);
+    auto sum = accumulate(begin(result), end(result), 0, f);
+    return sqrt(sum);
 }
 
 // auto closestCluster(auto point, auto clusters) {
