@@ -171,12 +171,25 @@ TEST(averageOfCluster, six)
     auto avg = average(arr);
     if (avg)
     {
-
         ASSERT_NEAR(get<0>(*avg), (double)0, .001);
     }
     else
     {
         FAIL();
+    }
+}
+
+TEST(averageOfCluster, seven)
+{
+    Cluster<int, 1> arr;
+    auto avg = average(arr);
+    if (avg)
+    {
+        FAIL();
+    }
+    else
+    {
+        SUCCEED();
     }
 }
 
