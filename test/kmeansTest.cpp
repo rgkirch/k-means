@@ -90,13 +90,13 @@ TEST(averageOfCluster, one)
 
 TEST(averageOfCluster, two)
 {
-    array<Point<float, 2>, 4> arr{1.1, 1.2,
-                                  2.3, 2.4,
-                                  1.5, 2.6,
-                                  2.7, 1.8};
+    array<Point<double, 2>, 4> arr{1.1, 1.2,
+                                   2.3, 2.4,
+                                   1.5, 2.6,
+                                   2.7, 1.8};
     auto avg = average(arr);
-    ASSERT_NEAR(get<0>(avg), 1.5, .001);
-    ASSERT_NEAR(get<1>(avg), 1.5, .001);
+    ASSERT_NEAR(get<0>(avg), 7.6 / 4, .001);
+    ASSERT_NEAR(get<1>(avg), 8.0 / 4, .001);
 }
 
 TEST(averageOfCluster, three)
@@ -133,4 +133,14 @@ TEST(averageOfCluster, six)
     array<Point<int, 1>, 1> arr{0};
     auto avg = average(arr);
     ASSERT_NEAR(get<0>(avg), (double)0, .001);
+}
+
+TEST(divide, one)
+{
+    Point<int, 3> arr{0, 1, 2};
+    Point<int, 3> denom;
+    denom.fill(2);
+    auto result = divide(arr, denom);
+    Point<double, 3> expected{0, .5, 1};
+    ASSERT_EQ(expected, result);
 }

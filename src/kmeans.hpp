@@ -1,13 +1,6 @@
 #pragma once
 
 #include <algorithm>
-#include <iostream>
-#include <vector>
-#include <array>
-
-using std::accumulate;
-using std::array;
-using std::begin;
 using std::cout;
 using std::end;
 using std::endl;
@@ -27,15 +20,16 @@ auto pointTransform(F f, auto a, auto b)
     static_assert(std::tuple_size<decltype(a)>::value ==
                       std::tuple_size<decltype(b)>::value,
                   "points must be of the same dimensionality");
-    decltype(a) result;
+    Point<typename F::result_type, std::tuple_size<decltype(a)>::value> result;
     transform(begin(a), end(a), begin(b), begin(result), f);
     return result;
 }
 
 // todo - don't require that the are the same length
 // expand the shorter one with zeroes
-auto minus = [](auto a, auto b) { return pointTransform(std::minus<int>(), a, b); };
-auto plus = [](auto a, auto b) { return pointTransform(std::plus<int>(), a, b); };
+auto minus = [](auto a, auto b) { return pointTransform(std::minus<typename decltype(a)::value_type>(), a, b); };
+auto plus = [](auto a, auto b) { return pointTransform(std::plus<typename decltype(a)::value_type>(), a, b); };
+auto divide = [](auto a, auto b) { return pointTransform(std::divides<double>(), a, b); };
 
 double distance(auto a, auto b)
 {
@@ -59,6 +53,9 @@ auto average(array<Point<auto, n>, x> arr)
     auto divide = [=](auto a) -> double { return (double)a / arr.size(); };
     auto acc = accumulate(begin(arr) + 1, end(arr), init, plus);
     Point<double, n> result;
+    // Point<int, n> denominator;
+    // denominator.fill(arr.size());
+    // return divide(result, denominator);
     transform(begin(acc), end(acc), begin(result), divide);
     return result;
 }

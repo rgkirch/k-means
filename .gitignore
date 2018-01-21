@@ -1,4 +1,3 @@
-.vscode/*
 build/*
 src/kmeans.hpp.gch
 src/a.out
