@@ -163,16 +163,16 @@ TEST(divide, one) {
 TEST(closestCluster, one) {
   Point<int, 2> data{0, 0};
   std::vector<Point<int, 2>> clusterPoints{{1, 0}, {4, 6}};
-  auto result = closestCluster(data, clusterPoints);
-  Point<int, 2> expected{1, 0};
+  auto result = findClosestCluster(data, clusterPoints);
+  auto expected = 0;
   ASSERT_EQ(expected, result);
 }
 
 TEST(closestCluster, two) {
   Point<int, 2> data{4, 0};
   std::vector<Point<int, 2>> clusterPoints{{1, 0}, {4, 2}};
-  auto result = closestCluster(data, clusterPoints);
-  Point<int, 2> expected{4, 2};
+  auto result = findClosestCluster(data, clusterPoints);
+  auto expected = 1;
   ASSERT_EQ(expected, result);
 }
 

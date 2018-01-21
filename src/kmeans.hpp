@@ -68,19 +68,19 @@ auto average(Cluster<auto, n> arr) -> optional<Point<double, n>> {
   }
 }
 
-auto closestCluster(auto point, auto clusterPoints) {
+unsigned long findClosestCluster(auto point, auto clusterPoints) {
   std::vector<double> distances;
   distances.reserve(clusterPoints.size());
   std::transform(
       begin(clusterPoints), end(clusterPoints), std::back_inserter(distances),
       [&](auto clusterPoint) { return distance(point, clusterPoint); });
   auto maxDistanceIt = std::min_element(begin(distances), end(distances));
-  auto maxDistanceIndex = std::distance(begin(distances), maxDistanceIt);
-  return clusterPoints[maxDistanceIndex];
+  return std::distance(begin(distances), maxDistanceIt);
 }
 
 // template <int n>
-// auto kMean(std::vector<Point<n>> points, std::vector<Point<n>> clusters) {
+// auto kMean(std::vector<Point<n>> points, std::vector<Point<n>> clusters)
+// {
 //     std::vector<Point<n>> clusterDiffs;
 //     clusterDiffs.resize(clusters.size());
 //     // clusterDiffs.reserve(clusters.size());
