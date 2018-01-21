@@ -54,8 +54,8 @@ double distance(auto a, auto b) {
   auto sum = std::accumulate(begin(result), end(result), 0, f);
   return sqrt(sum);
 }
-
-template <unsigned long n> auto average(Cluster<auto, n> arr) {
+template <typename T, unsigned long n>
+auto average(Cluster<T, n> arr) -> Point<double, n> {
   auto init = arr[0];
   auto point = std::accumulate(begin(arr) + 1, end(arr), init, plus);
   Point<int, n> denominator;
@@ -85,13 +85,15 @@ auto partitionClusters(Cluster<auto, n> points,
   return clusters;
 }
 
-template <int n>
-auto iterateKMeans(std::vector<Point<auto, n>> points,
-                   std::vector<Point<auto, n>> clusterPoints) {
+template <typename T, long unsigned n>
+auto iterateKMeans(std::vector<Point<T, n>> points,
+                   std::vector<Point<T, n>> clusterPoints)
+    -> std::tuple<Cluster<T, n>, Cluster<double, n>> {
   auto clusters = partitionClusters(points, clusterPoints);
-  decltype(clusterPoints) newClusterPoints;
+  std::vector<Point<double, n>> newClusterPoints;
   newClusterPoints.reserve(clusters.size());
+  auto avgFun = [](Cluster<T, n> c) { return average(c); };
   std::transform(begin(clusters), end(clusters),
-                 std::back_inserter(newClusterPoints), average);
+                 std::back_inserter(newClusterPoints), avgFun);
   return std::make_tuple(points, newClusterPoints);
 }

@@ -170,16 +170,18 @@ TEST(partitionClusters, three) {
   ASSERT_EQ(second, result[1]);
 }
 
-// TEST(iterateKMeans, one) {
-//   Cluster<int, 1> data{{1}, {2}, {4}, {5}};
-//   std::vector<Point<int, 1>> clusterPoints{{0}, {6}};
-//   auto[points, result] = iterateKMeans(data, clusterPoints);
-//   Point<int, 1> first = {};
-//   Point<int, 1> second = {4};
-//   ASSERT_EQ(data, points);
-//   ASSERT_EQ(first, result[0]);
-//   ASSERT_EQ(second, result[1]);
-// }
+TEST(iterateKMeans, one) {
+  Cluster<int, 1> data{{1}, {2}, {4}, {5}};
+  std::vector<Point<int, 1>> clusterPoints{{0}, {6}};
+  auto resultTup = iterateKMeans(data, clusterPoints);
+  auto points = get<0>(resultTup);
+  auto result = get<1>(resultTup);
+  Point<double, 1> first = {1.5};
+  Point<double, 1> second = {4.5};
+  ASSERT_EQ(data, points);
+  ASSERT_EQ(first, result[0]);
+  ASSERT_EQ(second, result[1]);
+}
 
 // TEST(generateCluster, one) {
 //   Cluster<int, 2> data{{0, 0}, {5, 5}};
