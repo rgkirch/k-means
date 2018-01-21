@@ -176,6 +176,16 @@ TEST(closestCluster, two) {
   ASSERT_EQ(expected, result);
 }
 
+TEST(partitionClusters, one) {
+  Cluster<int, 2> data{{0, 0}, {5, 5}};
+  std::vector<Point<int, 2>> clusterPoints{{1, 0}, {4, 2}};
+  auto result = partitionClusters(data, clusterPoints);
+  Cluster<int, 2> first = {{0, 0}};
+  Cluster<int, 2> second = {{5, 5}};
+  ASSERT_EQ(first, result[0]);
+  ASSERT_EQ(second, result[1]);
+}
+
 // TEST(generateCluster, one) {
 //   Cluster<int, 2> data{{0, 0}, {5, 5}};
 //   std::vector<Point<int, 2>> clusterPoints{{1, 0}, {4, 6}};

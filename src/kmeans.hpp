@@ -78,6 +78,18 @@ unsigned long findClosestCluster(auto point, auto clusterPoints) {
   return std::distance(begin(distances), maxDistanceIt);
 }
 
+template <long unsigned n>
+auto partitionClusters(Cluster<auto, n> points,
+                       std::vector<Point<auto, n>> clusterPoints) {
+  std::vector<decltype(points)> clusters;
+  clusters.resize(clusterPoints.size());
+  for (auto p : points) {
+    auto index = findClosestCluster(p, clusterPoints);
+    clusters[index].push_back(p);
+  }
+  return clusters;
+}
+
 // template <int n>
 // auto kMean(std::vector<Point<n>> points, std::vector<Point<n>> clusters)
 // {
