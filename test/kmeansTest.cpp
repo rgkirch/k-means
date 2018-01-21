@@ -160,10 +160,33 @@ TEST(divide, one) {
   ASSERT_EQ(expected, result);
 }
 
-TEST(generateCluster, one) {
-  Cluster<int, 2> data{{0, 0}, {5, 5}};
-  vector<Point<int, 2>> clusterPoints{{1, 0}, {4, 6}};
-  auto clusters = cluster(data, clusterPoints);
-  vector<Point<int, 2>> expected{{0, 0}, {5, 5}};
-  ASSERT_EQ()
+TEST(closestCluster, one) {
+  Point<int, 2> data{0, 0};
+  std::vector<Point<int, 2>> clusterPoints{{1, 0}, {4, 6}};
+  auto result = closestCluster(data, clusterPoints);
+  Point<int, 2> expected{1, 0};
+  ASSERT_EQ(expected, result);
 }
+
+TEST(closestCluster, two) {
+  Point<int, 2> data{4, 0};
+  std::vector<Point<int, 2>> clusterPoints{{1, 0}, {4, 2}};
+  auto result = closestCluster(data, clusterPoints);
+  Point<int, 2> expected{4, 2};
+  ASSERT_EQ(expected, result);
+}
+
+// TEST(generateCluster, one) {
+//   Cluster<int, 2> data{{0, 0}, {5, 5}};
+//   std::vector<Point<int, 2>> clusterPoints{{1, 0}, {4, 6}};
+//   auto result = cluster(data, clusterPoints);
+//   std::vector<Point<int, 2>> expected{{0, 0}, {5, 5}};
+//   ASSERT_EQ(expected, result);
+// }
+// TEST(generateCluster, two) {
+//   Cluster<int, 2> data{{1, 0}, {5, 5}};
+//   std::vector<Point<int, 2>> clusterPoints{{1, 0}, {4, 6}};
+//   auto result = cluster(data, clusterPoints);
+//   std::vector<Point<int, 2>> expected{{1, 0}, {5, 5}};
+//   ASSERT_EQ(expected, result);
+// }
