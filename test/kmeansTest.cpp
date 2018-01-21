@@ -186,6 +186,26 @@ TEST(partitionClusters, one) {
   ASSERT_EQ(second, result[1]);
 }
 
+TEST(partitionClusters, two) {
+  Cluster<int, 2> data{{1, 1}, {1, 4}, {4, 0}, {5, 5}};
+  std::vector<Point<int, 2>> clusterPoints{{0, 0}, {7, 7}};
+  auto result = partitionClusters(data, clusterPoints);
+  Cluster<int, 2> first = {{1, 1}, {1, 4}, {4, 0}};
+  Cluster<int, 2> second = {{5, 5}};
+  ASSERT_EQ(first, result[0]);
+  ASSERT_EQ(second, result[1]);
+}
+
+TEST(partitionClusters, three) {
+  Cluster<int, 1> data{{1}, {2}, {4}, {5}};
+  std::vector<Point<int, 1>> clusterPoints{{0}, {4}};
+  auto result = partitionClusters(data, clusterPoints);
+  Cluster<int, 1> first = {{1}, {2}};
+  Cluster<int, 1> second = {{4}, {5}};
+  ASSERT_EQ(first, result[0]);
+  ASSERT_EQ(second, result[1]);
+}
+
 // TEST(generateCluster, one) {
 //   Cluster<int, 2> data{{0, 0}, {5, 5}};
 //   std::vector<Point<int, 2>> clusterPoints{{1, 0}, {4, 6}};
