@@ -183,6 +183,13 @@ TEST(iterateKMeans, one) {
   ASSERT_EQ(second, result[1]);
 }
 
+TEST(initialClusterPoints, one) {
+  Cluster<int, 1> data{{1}, {2}, {3},  {4},  {5},  {6},  {7},
+                       {8}, {9}, {10}, {11}, {12}, {13}, {14}};
+  auto result = initialClusterPoints(4, data);
+  ASSERT_EQ(4, result.size());
+}
+
 // TEST(generateCluster, one) {
 //   Cluster<int, 2> data{{0, 0}, {5, 5}};
 //   std::vector<Point<int, 2>> clusterPoints{{1, 0}, {4, 6}};

@@ -4,6 +4,7 @@
 #include <array>
 #include <experimental/optional>
 #include <iostream>
+#include <random>
 #include <tuple>
 #include <vector>
 
@@ -97,3 +98,40 @@ auto iterateKMeans(std::vector<Point<T, n>> points,
                  std::back_inserter(newClusterPoints), avgFun);
   return std::make_tuple(points, newClusterPoints);
 }
+
+// range(0, points.size())
+// shuffle
+// walk through
+// if in set then skip
+template <typename T, long unsigned n>
+auto initialClusterPoints(unsigned long k, std::vector<Point<T, n>> points) {
+  std::vector<int> xs;
+  xs.resize(points.size());
+  std::iota(begin(xs), end(xs), 0);
+  std::random_device rd;
+  std::mt19937 g(rd());
+  std::shuffle(xs.begin(), xs.end(), g);
+  std::vector<Point<T, n>> seen;
+  std::vector<Point<T, n>> clusterPoints;
+  clusterPoints.reserve(k);
+  for (auto x = begin(xs); x != end(xs) && clusterPoints.size() < k; x++) {
+    auto p = begin(points) + *x;
+    if (std::find(begin(seen), end(seen), *p) == end(seen)) {
+      clusterPoints.push_back(*p);
+      seen.push_back(*p);
+    }
+  }
+  if (clusterPoints.size() < k)
+    throw std::runtime_error("couldn't find k unique points");
+  return clusterPoints;
+}
+
+// template <typename T, long unsigned n>
+// auto runKMeans(unsigned long k, std::vector<Point<T, n>> points)
+//     -> std::vector<Point<T, n>> {
+//   if (points.size() < k)
+//     throw std::logic_error("k must not be smaller than the number of
+//     points");
+//   std::vector<Point<double, n>> clusterPoints;
+//   clusterPoints.reserve(k);
+// }
