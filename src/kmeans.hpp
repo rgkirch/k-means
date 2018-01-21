@@ -1,6 +1,13 @@
 #pragma once
 
 #include <algorithm>
+#include <iostream>
+#include <vector>
+#include <array>
+
+using std::accumulate;
+using std::array;
+using std::begin;
 using std::cout;
 using std::end;
 using std::endl;
@@ -55,7 +62,7 @@ auto average(array<Point<auto, n>, x> arr)
     Point<double, n> result;
     // Point<int, n> denominator;
     // denominator.fill(arr.size());
-    // return divide(result, denominator);
+    // return divide(acc, denominator);
     transform(begin(acc), end(acc), begin(result), divide);
     return result;
 }
