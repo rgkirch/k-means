@@ -57,14 +57,10 @@ auto average(array<Point<auto, n>, x> arr)
     static_assert(std::tuple_size<decltype(arr)>::value > 0,
                   "array length must be greater than zero");
     auto init = arr[0];
-    auto divide = [=](auto a) -> double { return (double)a / arr.size(); };
-    auto acc = accumulate(begin(arr) + 1, end(arr), init, plus);
-    Point<double, n> result;
-    // Point<int, n> denominator;
-    // denominator.fill(arr.size());
-    // return divide(acc, denominator);
-    transform(begin(acc), end(acc), begin(result), divide);
-    return result;
+    auto point = accumulate(begin(arr) + 1, end(arr), init, plus);
+    Point<int, n> denominator;
+    denominator.fill(arr.size());
+    return divide(point, denominator);
 }
 
 // auto closestCluster(auto point, auto clusters) {
