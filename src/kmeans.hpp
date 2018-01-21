@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <experimental/optional>
 #include <iostream>
 #include <vector>
 #include <array>
@@ -11,6 +12,8 @@ using std::begin;
 using std::cout;
 using std::end;
 using std::endl;
+using std::experimental::make_optional;
+using std::experimental::optional;
 using std::pow;
 using std::sqrt;
 using std::transform;
@@ -18,6 +21,8 @@ using std::vector;
 
 template <typename a, int b>
 using Point = array<a, b>;
+template <typename a, int b>
+using Cluster = vector<Point<a, b>>;
 
 template <typename F>
 auto pointTransform(F f, auto a, auto b)
@@ -51,16 +56,22 @@ double distance(auto a, auto b)
     return sqrt(sum);
 }
 
-template <unsigned long n, unsigned long x>
-auto average(array<Point<auto, n>, x> arr)
+template <unsigned long n>
+auto average(Cluster<auto, n> arr) -> optional<Point<double, n>>
 {
-    static_assert(std::tuple_size<decltype(arr)>::value > 0,
-                  "array length must be greater than zero");
-    auto init = arr[0];
-    auto point = accumulate(begin(arr) + 1, end(arr), init, plus);
-    Point<int, n> denominator;
-    denominator.fill(arr.size());
-    return divide(point, denominator);
+    if (arr.size() > 0)
+    {
+        auto init = arr[0];
+        auto point = accumulate(begin(arr) + 1, end(arr), init, plus);
+        Point<int, n> denominator;
+        denominator.fill(arr.size());
+        auto result = divide(point, denominator);
+        return make_optional(result);
+    }
+    else
+    {
+        return {};
+    }
 }
 
 // auto closestCluster(auto point, auto clusters) {

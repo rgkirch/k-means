@@ -82,57 +82,102 @@ TEST(distance, six)
 
 TEST(averageOfCluster, one)
 {
-    array<Point<int, 2>, 4> arr{1, 1, 2, 2, 1, 2, 2, 1};
+    Cluster<int, 2> arr{{1, 1}, {2, 2}, {1, 2}, {2, 1}};
     auto avg = average(arr);
-    ASSERT_NEAR(get<0>(avg), 1.5, .01);
-    ASSERT_NEAR(get<1>(avg), 1.5, .01);
+    if (avg)
+    {
+        ASSERT_NEAR(get<0>(*avg), 1.5, .01);
+        ASSERT_NEAR(get<1>(*avg), 1.5, .01);
+    }
+    else
+    {
+        FAIL();
+    }
 }
 
 TEST(averageOfCluster, two)
 {
-    array<Point<double, 2>, 4> arr{1.1, 1.2,
-                                   2.3, 2.4,
-                                   1.5, 2.6,
-                                   2.7, 1.8};
+    Cluster<double, 2> arr{{1.1, 1.2},
+                           {2.3, 2.4},
+                           {1.5, 2.6},
+                           {2.7, 1.8}};
     auto avg = average(arr);
-    ASSERT_NEAR(get<0>(avg), 7.6 / 4, .001);
-    ASSERT_NEAR(get<1>(avg), 8.0 / 4, .001);
+    if (avg)
+    {
+
+        ASSERT_NEAR(get<0>(*avg), 7.6 / 4, .001);
+        ASSERT_NEAR(get<1>(*avg), 8.0 / 4, .001);
+    }
+    else
+    {
+        FAIL();
+    }
 }
 
 TEST(averageOfCluster, three)
 {
-    array<Point<int, 2>, 3> arr{0, 0,
-                                5, 0,
-                                0, 5};
+    Cluster<int, 2> arr{{0, 0},
+                        {5, 0},
+                        {0, 5}};
     auto avg = average(arr);
-    ASSERT_NEAR(get<0>(avg), (double)5 / 3, .001);
-    ASSERT_NEAR(get<1>(avg), (double)5 / 3, .001);
+    if (avg)
+    {
+
+        ASSERT_NEAR(get<0>(*avg), (double)5 / 3, .001);
+        ASSERT_NEAR(get<1>(*avg), (double)5 / 3, .001);
+    }
+    else
+    {
+        FAIL();
+    }
 }
 
 TEST(averageOfCluster, four)
 {
-    array<Point<int, 4>, 2> arr{1, 2, 3, 3,
-                                0, 5, 5, 4};
+    Cluster<int, 4> arr{{1, 2, 3, 3},
+                        {0, 5, 5, 4}};
     auto avg = average(arr);
-    ASSERT_NEAR(get<0>(avg), (double)1 / 2, .001);
-    ASSERT_NEAR(get<1>(avg), (double)7 / 2, .001);
-    ASSERT_NEAR(get<2>(avg), (double)8 / 2, .001);
-    ASSERT_NEAR(get<3>(avg), (double)7 / 2, .001);
+    if (avg)
+    {
+        ASSERT_NEAR(get<0>(*avg), (double)1 / 2, .001);
+        ASSERT_NEAR(get<1>(*avg), (double)7 / 2, .001);
+        ASSERT_NEAR(get<2>(*avg), (double)8 / 2, .001);
+        ASSERT_NEAR(get<3>(*avg), (double)7 / 2, .001);
+    }
+    else
+    {
+        FAIL();
+    }
 }
 
 TEST(averageOfCluster, five)
 {
-    array<Point<int, 2>, 1> arr{1, 2};
+    Cluster<int, 2> arr{{1, 2}};
     auto avg = average(arr);
-    ASSERT_NEAR(get<0>(avg), (double)1, .001);
-    ASSERT_NEAR(get<1>(avg), (double)2, .001);
+    if (avg)
+    {
+        ASSERT_NEAR(get<0>(*avg), (double)1, .001);
+        ASSERT_NEAR(get<1>(*avg), (double)2, .001);
+    }
+    else
+    {
+        FAIL();
+    }
 }
 
 TEST(averageOfCluster, six)
 {
-    array<Point<int, 1>, 1> arr{0};
+    Cluster<int, 1> arr{{0}};
     auto avg = average(arr);
-    ASSERT_NEAR(get<0>(avg), (double)0, .001);
+    if (avg)
+    {
+
+        ASSERT_NEAR(get<0>(*avg), (double)0, .001);
+    }
+    else
+    {
+        FAIL();
+    }
 }
 
 TEST(divide, one)
@@ -144,3 +189,15 @@ TEST(divide, one)
     Point<double, 3> expected{0, .5, 1};
     ASSERT_EQ(expected, result);
 }
+
+// TEST(generateCluster, one)
+// {
+//     array<Point<int, 2>, 2> data{0, 0,
+//                                  5, 5};
+//     array<Point<int, 2>, 2> clusterPoints{1, 0,
+//                                           4, 6};
+//     auto clusters = cluster(data, clusterPoints);
+//     array<Point<int, 2>, 2> expected{0, 0,
+//                                      5, 5};
+//     ASSERT_EQ()
+// }
