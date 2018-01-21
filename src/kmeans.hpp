@@ -4,6 +4,7 @@
 #include <array>
 #include <experimental/optional>
 #include <iostream>
+#include <tuple>
 #include <vector>
 
 using std::array;
@@ -54,18 +55,12 @@ double distance(auto a, auto b) {
   return sqrt(sum);
 }
 
-template <unsigned long n>
-auto average(Cluster<auto, n> arr) -> optional<Point<double, n>> {
-  if (arr.size() > 0) {
-    auto init = arr[0];
-    auto point = std::accumulate(begin(arr) + 1, end(arr), init, plus);
-    Point<int, n> denominator;
-    denominator.fill(arr.size());
-    auto result = divide(point, denominator);
-    return make_optional(result);
-  } else {
-    return {};
-  }
+template <unsigned long n> auto average(Cluster<auto, n> arr) {
+  auto init = arr[0];
+  auto point = std::accumulate(begin(arr) + 1, end(arr), init, plus);
+  Point<int, n> denominator;
+  denominator.fill(arr.size());
+  return divide(point, denominator);
 }
 
 unsigned long findClosestCluster(auto point, auto clusterPoints) {
@@ -90,19 +85,13 @@ auto partitionClusters(Cluster<auto, n> points,
   return clusters;
 }
 
-// template <int n>
-// auto kMean(std::vector<Point<n>> points, std::vector<Point<n>> clusters)
-// {
-//     std::vector<Point<n>> clusterDiffs;
-//     clusterDiffs.resize(clusters.size());
-//     // clusterDiffs.reserve(clusters.size());
-//     // for(int i = 0; i < clusters.size(); i++) {
-//     //     clusterDiffs.emplace_back();
-//     // }
-//     // std::fill(clusterDiffs.begin(), clusterdiffs.end(), 0);
-//     for(auto point : points) {
-//         for(auto cluster : clusters) {
-//             f(point, cluster, clusterDiffs[]);
-//         }
-//     }
-// }
+template <int n>
+auto iterateKMeans(std::vector<Point<auto, n>> points,
+                   std::vector<Point<auto, n>> clusterPoints) {
+  auto clusters = partitionClusters(points, clusterPoints);
+  decltype(clusterPoints) newClusterPoints;
+  newClusterPoints.reserve(clusters.size());
+  std::transform(begin(clusters), end(clusters),
+                 std::back_inserter(newClusterPoints), average);
+  return std::make_tuple(points, newClusterPoints);
+}

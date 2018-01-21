@@ -75,80 +75,44 @@ TEST(distance, six) {
 TEST(averageOfCluster, one) {
   Cluster<int, 2> arr{{1, 1}, {2, 2}, {1, 2}, {2, 1}};
   auto avg = average(arr);
-  if (avg) {
-    ASSERT_NEAR(get<0>(*avg), 1.5, .01);
-    ASSERT_NEAR(get<1>(*avg), 1.5, .01);
-  } else {
-    FAIL();
-  }
+  ASSERT_NEAR(get<0>(avg), 1.5, .01);
+  ASSERT_NEAR(get<1>(avg), 1.5, .01);
 }
 
 TEST(averageOfCluster, two) {
   Cluster<double, 2> arr{{1.1, 1.2}, {2.3, 2.4}, {1.5, 2.6}, {2.7, 1.8}};
   auto avg = average(arr);
-  if (avg) {
-
-    ASSERT_NEAR(get<0>(*avg), 7.6 / 4, .001);
-    ASSERT_NEAR(get<1>(*avg), 8.0 / 4, .001);
-  } else {
-    FAIL();
-  }
+  ASSERT_NEAR(get<0>(avg), 7.6 / 4, .001);
+  ASSERT_NEAR(get<1>(avg), 8.0 / 4, .001);
 }
 
 TEST(averageOfCluster, three) {
   Cluster<int, 2> arr{{0, 0}, {5, 0}, {0, 5}};
   auto avg = average(arr);
-  if (avg) {
-
-    ASSERT_NEAR(get<0>(*avg), (double)5 / 3, .001);
-    ASSERT_NEAR(get<1>(*avg), (double)5 / 3, .001);
-  } else {
-    FAIL();
-  }
+  ASSERT_NEAR(get<0>(avg), (double)5 / 3, .001);
+  ASSERT_NEAR(get<1>(avg), (double)5 / 3, .001);
 }
 
 TEST(averageOfCluster, four) {
   Cluster<int, 4> arr{{1, 2, 3, 3}, {0, 5, 5, 4}};
   auto avg = average(arr);
-  if (avg) {
-    ASSERT_NEAR(get<0>(*avg), (double)1 / 2, .001);
-    ASSERT_NEAR(get<1>(*avg), (double)7 / 2, .001);
-    ASSERT_NEAR(get<2>(*avg), (double)8 / 2, .001);
-    ASSERT_NEAR(get<3>(*avg), (double)7 / 2, .001);
-  } else {
-    FAIL();
-  }
+  ASSERT_NEAR(get<0>(avg), (double)1 / 2, .001);
+  ASSERT_NEAR(get<1>(avg), (double)7 / 2, .001);
+  ASSERT_NEAR(get<2>(avg), (double)8 / 2, .001);
+  ASSERT_NEAR(get<3>(avg), (double)7 / 2, .001);
 }
 
 TEST(averageOfCluster, five) {
   Cluster<int, 2> arr{{1, 2}};
   auto avg = average(arr);
-  if (avg) {
-    ASSERT_NEAR(get<0>(*avg), (double)1, .001);
-    ASSERT_NEAR(get<1>(*avg), (double)2, .001);
-  } else {
-    FAIL();
-  }
+  ASSERT_NEAR(get<0>(avg), (double)1, .001);
+  ASSERT_NEAR(get<1>(avg), (double)2, .001);
 }
 
 TEST(averageOfCluster, six) {
   Cluster<int, 1> arr{{0}};
   auto avg = average(arr);
-  if (avg) {
-    ASSERT_NEAR(get<0>(*avg), (double)0, .001);
-  } else {
-    FAIL();
-  }
-}
-
-TEST(averageOfCluster, seven) {
-  Cluster<int, 1> arr;
-  auto avg = average(arr);
-  if (avg) {
-    FAIL();
-  } else {
-    SUCCEED();
-  }
+  ASSERT_NEAR(get<0>(avg), (double)0, .001);
 }
 
 TEST(divide, one) {
@@ -205,6 +169,17 @@ TEST(partitionClusters, three) {
   ASSERT_EQ(first, result[0]);
   ASSERT_EQ(second, result[1]);
 }
+
+// TEST(iterateKMeans, one) {
+//   Cluster<int, 1> data{{1}, {2}, {4}, {5}};
+//   std::vector<Point<int, 1>> clusterPoints{{0}, {6}};
+//   auto[points, result] = iterateKMeans(data, clusterPoints);
+//   Point<int, 1> first = {};
+//   Point<int, 1> second = {4};
+//   ASSERT_EQ(data, points);
+//   ASSERT_EQ(first, result[0]);
+//   ASSERT_EQ(second, result[1]);
+// }
 
 // TEST(generateCluster, one) {
 //   Cluster<int, 2> data{{0, 0}, {5, 5}};
