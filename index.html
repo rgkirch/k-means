@@ -192,51 +192,7 @@ convert -delay 10 *.png plotPics9.gif
              1 FAILED TEST
     </code>
 </pre>
-    <p>I made a point type and a function to subtract them</p>
-    <pre>
-    <code class="language-cpp">
-template &lt;int n&gt;
-using Point = array&lt;int, n&gt;;
-
-auto minus(auto a, auto b) {
-    decltype(a) result;
-    transform(begin(a), end(a), begin(b), begin(result), std::minus&lt;int&gt;());
-    return result;
-}
-auto plus(auto a, auto b) {
-    decltype(a) result;
-    transform(begin(a), end(a), begin(b), begin(result), std::plus&lt;int&gt;());
-    return result;
-}
-    </code>
-</pre>
-    <p>I made a distance function</p>
-    <pre class="language-cpp">
-        <code>
-            double distance(auto a, auto b) {
-                auto f = [](double a, double b) { return a + pow(b, 2); };
-                auto result = minus(a, b);
-                auto sum = accumulate(begin(result), end(result), 0, f);
-                return sqrt(sum);
-            }
-        </code>
-    </pre>
-    <p>I made a function to find the average of a cluster of points</p>
-    <pre class="language-cpp">
-        <code>
-            template &lt;unsigned long n, unsigned long x&gt;
-            auto average(array&lt;Point&lt;auto, n&gt;, x&gt; arr) {
-                auto init = arr[0];
-                auto divide = [=](auto a) -&gt; double { return (double)a / arr.size(); };
-                auto p = [](auto a, auto b) { return plus(a, b); };
-                auto acc = accumulate(begin(arr) + 1, end(arr), init, p);
-                Point&lt;double, n&gt; result;
-                transform(begin(acc), end(acc), begin(result), divide);
-                return result;
-            }
-        </code>
-    </pre>
-
+    <pre class="language-cpp" data-src="src/kmeans.hpp"></pre>
 
 </body>
 
