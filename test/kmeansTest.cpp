@@ -264,12 +264,10 @@ TEST(iterateKMeans, eight) {
   ASSERT_EQ(12, result[3][0]);
 }
 
-// TEST(runKMeans, one) {
-//   std::vector<Point<1>> data{{1}, {2}, {3},  {4},  {5},  {6},  {7},
-//                              {8}, {9}, {10}, {11}, {12}, {13}, {14}};
-//   auto result = runKMeans(4, data);
-//   ASSERT_EQ(2.5, result[0][0]);
-//   ASSERT_EQ(6.5, result[1][0]);
-//   ASSERT_EQ(10.5, result[2][0]);
-//   ASSERT_EQ(12.5, result[3][0]);
-// }
+TEST(runKMeans, one) {
+  std::vector<Point<1>> data{{1}, {2}, {3},  {4},  {5},  {6},  {7},
+                             {8}, {9}, {10}, {11}, {12}, {13}, {14}};
+  auto result = runKMeans(4, data);
+  auto result2 = iterateKMeans(data, result);
+  ASSERT_EQ(result, result2);
+}

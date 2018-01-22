@@ -134,8 +134,7 @@ template <long unsigned n>
 auto runKMeans(unsigned long k, std::vector<Point<n>> points) {
   if (points.size() < k)
     throw std::logic_error("k must not be smaller than the number of points");
-  auto intClusterPoints = initialClusterPoints(k, points);
-  auto clusterPoints = iterateKMeans(points, intClusterPoints);
+  auto clusterPoints = initialClusterPoints(k, points);
   auto newClusterPoints = iterateKMeans(points, clusterPoints);
   for (int i = 1; i > 0 && clusterPoints != newClusterPoints; i++) {
     std::swap(clusterPoints, newClusterPoints);
