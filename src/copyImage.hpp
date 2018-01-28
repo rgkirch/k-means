@@ -12,7 +12,7 @@ int copyImage() {
   try {
     image.read("/mnt/c/Users/richie/Documents/github/k-means/"
                "resources/mnms.jpg");
-    image.modifyImage(); // the internet says I need it but it worked without it
+    image.modifyImage();
     auto width = image.columns();
     auto height = image.rows();
     PixelPacket *pixels = image.getPixels(0, 0, width, height);
@@ -24,7 +24,7 @@ int copyImage() {
       pixels++;
     }
 
-    image.syncPixels(); // the internet says I need it but it worked without it
+    image.syncPixels();
     image.write("/mnt/c/Users/richie/Documents/github/k-means/"
                 "resources/copy.jpg");
   } catch (Exception &error_) {
