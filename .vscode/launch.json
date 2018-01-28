@@ -5,12 +5,44 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "debug readImage",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/mnt/c/Users/richie/Documents/github/k-means/build/test/readImageTest",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "/mnt/c/Users/richie/Documents/github/k-means/build/test/",
+            "environment": [],
+            "externalConsole": true,
+            "windows": {
+                "MIMode": "gdb",
+                "setupCommands": [
+                    {
+                        "description": "Enable pretty-printing for gdb",
+                        "text": "-enable-pretty-printing",
+                        "ignoreFailures": true
+                    }
+                ]
+            },
+            "pipeTransport": {
+                "pipeCwd": "",
+                "pipeProgram": "c:\\windows\\sysnative\\bash.exe",
+                "pipeArgs": [
+                    "-c"
+                ],
+                "debuggerPath": "/usr/bin/gdb"
+            },
+            "sourceFileMap": {
+                "/mnt/c": "c:\\"
+            }
+        },
+        {
             "name": "debug kmeansTest",
             "type": "cppdbg",
             "request": "launch",
             "program": "/mnt/c/Users/richie/Documents/github/k-means/build/test/kmeansTest",
             "args": [],
-            "stopAtEntry": true,
+            "stopAtEntry": false,
             "cwd": "/mnt/c/Users/richie/Documents/github/k-means/build/test/",
             "environment": [],
             "externalConsole": true,
