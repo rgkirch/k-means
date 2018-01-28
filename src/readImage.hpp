@@ -1,5 +1,4 @@
 #include <Magick++.h>
-#include <fstream>
 #include <iostream>
 #include <string>
 using namespace Magick;
@@ -7,28 +6,49 @@ using namespace Magick;
 using std::cout;
 using std::endl;
 
-int readImage() {
+void writeImage(std::vector<char> data, std::string geometry,
+                std::string targetFileName) {
   InitializeMagick("");
-  Image image;
+  Image image(geometry, Color("white"));
+  image.modifyImage();
   try {
-    image.read("/mnt/c/Users/richie/Documents/github/k-means/"
-               "resources/mnms.jpg");
-    // image.modifyImage();
-    Pixels view(image);
     auto width = image.columns();
     auto height = image.rows();
-    PixelPacket *pixels = view.get(0, 0, width, height);
-    int x = 0;
-    for (int i = 0; i < width * height; ++i) {
-      *pixels++ =
-          ColorRGB(pixels->red + x, pixels->green + x, pixels->blue + x);
+    PixelPacket *pixels = image.getPixels(0, 0, width, height);
+    // std::transform(pixels, pixels + width * height,
+    // std::back_inserter(data));
+    for (int i = 0; i < width * height; i++) {
+      *pixels = ColorRGB(data[i * 3] / 255.0, data[i * 3 + 1] / 255.0,
+                         data[i * 3 + 2] / 255.0);
+      pixels++;
     }
-
-    image.write("/mnt/c/Users/richie/Documents/github/k-means/"
-                "resources/plus.jpg");
+    image.syncPixels();
+    image.write(targetFileName.c_str());
   } catch (Exception &error_) {
     cout << "Caught exception: " << error_.what() << endl;
-    return 1;
   }
-  return 0;
+}
+
+std::vector<char> readImage(std::string sourceFileName) {
+  InitializeMagick("");
+  Image image;
+  std::vector<char> data;
+  try {
+    image.read(sourceFileName.c_str());
+    auto width = image.columns();
+    auto height = image.rows();
+    PixelPacket *pixels = image.getPixels(0, 0, width, height);
+    data.reserve(width * height);
+    // std::transform(pixels, pixels + width * height,
+    // std::back_inserter(data));
+    for (int i = 0; i < width * height; i++) {
+      data.push_back((char)(pixels->red / 65535.0 * 255));
+      data.push_back((char)(pixels->green / 65535.0 * 255));
+      data.push_back((char)(pixels->blue / 65535.0 * 255));
+      pixels++;
+    }
+  } catch (Exception &error_) {
+    cout << "Caught exception: " << error_.what() << endl;
+  }
+  return data;
 }
