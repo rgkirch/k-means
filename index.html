@@ -193,6 +193,15 @@ convert -delay 10 *.png plotPics9.gif
     </code>
 </pre>
     <pre class="language-cpp" data-src="src/kmeans.hpp"></pre>
+    <h3>graphics magick copy an image</h3>
+    <p>this feels like chapter 2</p>
+    <p>i think i'm actually using graphics magick which just implemented the image magick api</p>
+    <p>the goal was just to open a picture and read it's contents which was much more difficult than I expected</p>
+    <p>as it turns out, when I read a pixel I get a value in the range of 0 to 65535 (or 1
+        << 16 - 1) but when i write the pixel
+            it must be in the range of 0 to 1</p>
+            <p>unpleasant</p>
+            <pre class="language-cpp" data-src="src/copyImage.hpp"></pre>
 
 </body>
 
