@@ -26,7 +26,7 @@
             "command": "mkdir debug && cd debug && cmake -DCMAKE_BUILD_TYPE=Debug .."
         },
         {
-            "label": "readImageTest release",
+            "label": "copyImageTest release",
             "type": "shell",
             "presentation": {
                 "echo": true,
@@ -34,11 +34,11 @@
                 "focus": false,
                 "panel": "new"
             },
-            "command": "cd release && make readImageTest && test/readImageTest",
+            "command": "cd release && make copyImageTest && test/copyImageTest",
             "problemMatcher": "$gcc"
         },
         {
-            "label": "readImageTest debug",
+            "label": "copyImageTest debug",
             "type": "shell",
             "presentation": {
                 "echo": true,
@@ -46,7 +46,7 @@
                 "focus": false,
                 "panel": "new"
             },
-            "command": "cd debug && make readImageTest && test/readImageTest",
+            "command": "cd debug && make copyImageTest && test/copyImageTest",
         },
         {
             "label": "kmeansTest",

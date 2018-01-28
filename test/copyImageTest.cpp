@@ -1,5 +1,5 @@
 
-#include "readImage.hpp"
+#include "copyImage.hpp"
 #include "gmock/gmock.h"
 #include "kmeans.hpp"
 #include "gtest/gtest.h"
@@ -10,4 +10,4 @@ using std::cout;
 using std::endl;
 using std::get;
 
-TEST(readImage, one) { readImage(); }
+TEST(copyImage, one) { copyImage(); }
