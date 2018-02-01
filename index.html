@@ -47,7 +47,17 @@
     <h3>I wonder if i can make a basic scatter plot</h3>
     <div class="code-image-pair">
 
-        <pre class="line-numbers" data-src="src/basic_scatter.py">
+        <pre class="line-numbers">
+            <code class="language-python">
+                    import random
+                    import numpy as np
+                    from matplotlib import pyplot as plt
+                    
+                    xs = [random.random() for x in range(10)]
+                    ys = [random.random() for x in range(10)]
+                    plt.scatter(xs, ys)
+                    plt.show()
+            </code>
         </pre>
         <img height=300 src="resources/k_means.1.png" />
     </div>
@@ -56,7 +66,20 @@
     <h3>i wonder if i can add colors to the points</h3>
     <div class="code-image-pair">
 
-        <pre class="line-numbers" data-src="src/add_colors.py">
+        <pre class="line-numbers">
+            <code class="language-python">
+                    import random
+                    import numpy as np
+                    from matplotlib import pyplot as plt
+                    
+                    xs = [random.random() for x in range(10)]
+                    ys = [random.random() for x in range(10)]
+                    plt.scatter(xs, ys, c=&quot;blue&quot;)
+                    xs = [random.random() for x in range(10)]
+                    ys = [random.random() for x in range(10)]
+                    plt.scatter(xs, ys, c=&quot;green&quot;)
+                    plt.show()
+            </code>
         </pre>
         <img src="resources/k_means.2.png" height=300/>
     </div>
@@ -164,43 +187,84 @@ convert -delay 10 *.png plotPics9.gif
 </pre>
     <pre>
     <code class="language-bash">
-            Running main() from gtest_main.cc
-            [==========] Running 2 tests from 2 test cases.
-            [----------] Global test environment set-up.
-            [----------] 1 test from thisPasses
-            [ RUN      ] thisPasses.helloHello
-            [       OK ] thisPasses.helloHello (0 ms)
-            [----------] 1 test from thisPasses (0 ms total)
-            
-            [----------] 1 test from thisFails
-            [ RUN      ] thisFails.helloWorld
-            /mnt/c/Users/richie/Documents/github/k-means/test/kmeansTest.cpp:14: Failure
-            Expected equality of these values:
-              "hello"
-                Which is: 0x43f9bf
-              "world"
-                Which is: 0x43fa11
-            [  FAILED  ] thisFails.helloWorld (0 ms)
-            [----------] 1 test from thisFails (1 ms total)
-            
-            [----------] Global test environment tear-down
-            [==========] 2 tests from 2 test cases ran. (1 ms total)
-            [  PASSED  ] 1 test.
-            [  FAILED  ] 1 test, listed below:
-            [  FAILED  ] thisFails.helloWorld
-            
-             1 FAILED TEST
+        Running main() from gtest_main.cc
+        [==========] Running 2 tests from 2 test cases.
+        [----------] Global test environment set-up.
+        [----------] 1 test from thisPasses
+        [ RUN      ] thisPasses.helloHello
+        [       OK ] thisPasses.helloHello (0 ms)
+        [----------] 1 test from thisPasses (0 ms total)
+        
+        [----------] 1 test from thisFails
+        [ RUN      ] thisFails.helloWorld
+        &#x2F;mnt&#x2F;c&#x2F;Users&#x2F;richie&#x2F;Documents&#x2F;github&#x2F;k-means&#x2F;test&#x2F;kmeansTest.cpp:14: Failure
+        Expected equality of these values:
+          &quot;hello&quot;
+            Which is: 0x43f9bf
+          &quot;world&quot;
+            Which is: 0x43fa11
+        [  FAILED  ] thisFails.helloWorld (0 ms)
+        [----------] 1 test from thisFails (1 ms total)
+        
+        [----------] Global test environment tear-down
+        [==========] 2 tests from 2 test cases ran. (1 ms total)
+        [  PASSED  ] 1 test.
+        [  FAILED  ] 1 test, listed below:
+        [  FAILED  ] thisFails.helloWorld
+        
+         1 FAILED TEST
     </code>
 </pre>
     <pre class="language-cpp" data-src="src/kmeans.hpp"></pre>
     <h3>graphics magick copy an image</h3>
-    <p>this feels like chapter 2</p>
     <p>i think i'm actually using graphics magick which just implemented the image magick api</p>
     <p>the goal was just to open a picture and read it's contents which was much more difficult than I expected</p>
     <p>as it turns out, when I read a pixel I get a value in the range of 0 to 65535 (or 1
         << 16 - 1) but when i write the pixel it must be in the range of 0 to 1</p>
-            <p>unpleasant</p>
-            <pre class="language-cpp" data-src="src/copyImage.hpp"></pre>
+            <p>I think that the range of the read value is determined by the bit depth</p>
+            <p>writing it as a decimal in the range of 0 to 1 makes it agnostic of the bit depth</p>
+            <pre class="language-cpp">
+            <code>
+
+                #include &lt;Magick++.h&gt;
+                #include &lt;iostream&gt;
+                #include &lt;string&gt;
+                using namespace Magick;
+                
+                using std::cout;
+                using std::endl;
+                
+                int copyImage() {
+                    InitializeMagick(&quot;&quot;);
+                    Image image;
+                    try {
+                    image.read(&quot;&#x2F;mnt&#x2F;c&#x2F;Users&#x2F;richie&#x2F;Documents&#x2F;github&#x2F;k-means&#x2F;&quot;
+                                &quot;resources&#x2F;mnms.jpg&quot;);
+                    image.modifyImage();
+                    auto width = image.columns();
+                    auto height = image.rows();
+                    PixelPacket *pixels = image.getPixels(0, 0, width, height);
+                
+                    double x = 65535;
+                    for (int i = 0; i &lt; width * height; ++i) {
+                        *pixels = ColorRGB(pixels-&gt;red &#x2F; x, pixels-&gt;green &#x2F; x, pixels-&gt;blue &#x2F; x);
+                        pixels++;
+                    }
+                
+                    image.syncPixels();
+                    image.write(&quot;&#x2F;mnt&#x2F;c&#x2F;Users&#x2F;richie&#x2F;Documents&#x2F;github&#x2F;k-means&#x2F;&quot;
+                                &quot;resources&#x2F;copy.jpg&quot;);
+                    } catch (Exception &amp;error_) {
+                    cout &lt;&lt; &quot;Caught exception: &quot; &lt;&lt; error_.what() &lt;&lt; endl;
+                    return 1;
+                    }
+                    return 0;
+                }
+            </code>
+        </pre>
+            <p>
+                todo - unit test kmeans with a picture
+            </p>
 
 </body>
 
