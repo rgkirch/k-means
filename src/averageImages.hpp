@@ -1,3 +1,4 @@
+#pragma once
 #include "readRunWrite.hpp"
 #include <Magick++.h>
 #include <iostream>

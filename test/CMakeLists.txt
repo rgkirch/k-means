@@ -11,20 +11,21 @@ if (OPENMP_FOUND)
     set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
-add_executable(kmeansTest kmeansTest.cpp)
-target_link_libraries(kmeansTest gtest gtest_main gmock)
-
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -lstdc++fs")
-#set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -std=c++17 -lstdc++fs")
-#add_library(stdc++fs UNKNOWN IMPORTED)
-#set_property(TARGET stdc++fs PROPERTY IMPORTED_LOCATION "/usr/lib/gcc/x86_64-linux-gnu/5/libstdc++fs.a")
-
-add_executable(directoryIteratorTest directoryIteratorTest.cpp)
-target_link_libraries(directoryIteratorTest stdc++fs)
-
-add_executable(everythingTest everythingTest.cpp)
 find_package(ImageMagick COMPONENTS Magick++)
 include_directories(${ImageMagick_INCLUDE_DIRS})
 add_definitions( -DMAGICKCORE_QUANTUM_DEPTH=16 )
 add_definitions( -DMAGICKCORE_HDRI_ENABLE=0 )
-target_link_libraries(everythingTest gtest gtest_main gmock ${ImageMagick_LIBRARIES})
+
+#add_executable(everythingTest everythingTest.cpp)
+
+add_executable(kmeansTest kmeansTest.cpp)
+target_link_libraries(kmeansTest gtest gtest_main gmock)
+add_test(NAME kmeansTestTest COMMAND kmeansTest)
+
+add_executable(directoryIteratorTest directoryIteratorTest.cpp)
+target_link_libraries(directoryIteratorTest stdc++fs gtest gtest_main gmock ${ImageMagick_LIBRARIES})
+#add_test(NAME directoryIteratorTestTest COMMAND directoryIteratorTest)
+
+add_executable(readRunWriteTest readRunWriteTest.cpp)
+target_link_libraries(readRunWriteTest  gtest gtest_main gmock ${ImageMagick_LIBRARIES})
+add_test(NAME readRunWriteTestTest COMMAND readRunWriteTest)

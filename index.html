@@ -101,7 +101,6 @@
                     zs = [random.random() for x in range(10)]
                     ax.scatter(xs, ys, zs)
                     plt.show()
-
             </code>
     </pre>
         <img src="resources/k_means.3.png" height=300/>
@@ -190,11 +189,12 @@ convert -delay 10 *.png plotPics9.gif
     <code class="language-bash">
     mkdir build
     cd build
-    cmake ..
+    cmake -DCMAKE_BUILD_TYPE=Debug ..
     make kmeansTest
     test/kmeansTest
-</code>
-</pre>
+    </code>
+    </pre>
+
     <pre>
     <code class="language-cpp">
             #include "gtest/gtest.h"
@@ -208,7 +208,7 @@ convert -delay 10 *.png plotPics9.gif
                 ASSERT_EQ("hello", "world");
             }
     </code>
-</pre>
+    </pre>
     <pre>
     <code class="language-bash">
         Running main() from gtest_main.cc
