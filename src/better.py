@@ -10,17 +10,12 @@ from mpl_toolkits.mplot3d import Axes3D
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
-def genPoints(length):
-    for color in ["red", "green", "blue"]:
-        xs = random(length)
-        ys = random(length)
-        zs = random(length)
-    return (xs, ys, zs)
-
 precision = 2
 rotationScale = 4
 length = 30
-xs, ys, zs = genPoints(length)
+xs = random(length)
+ys = random(length)
+zs = random(length)
 ax.scatter(xs, ys, zs)
 steps = [x / precision for x in range(int(2*math.pi*precision))]
 for i,r in enumerate(steps):
