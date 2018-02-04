@@ -1,4 +1,5 @@
-import subprocess, math
+import subprocess
+import math
 from numpy.random import random
 
 import matplotlib
@@ -18,7 +19,7 @@ ys = random(length)
 zs = random(length)
 ax.scatter(xs, ys, zs)
 steps = [x / precision for x in range(int(2*math.pi*precision))]
-for i,r in enumerate(steps):
+for i, r in enumerate(steps):
     view_init_x = 30 + math.sin(r) * rotationScale
     view_init_y = 30 + math.cos(r+math.pi) * rotationScale
     ax.view_init(view_init_x, view_init_y)
