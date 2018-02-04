@@ -17,10 +17,9 @@ int copyImage() {
     auto height = image.rows();
     PixelPacket *pixels = image.getPixels(0, 0, width, height);
 
-    double x = 65535; // unpleasant
+    double x = 65535;
     for (int i = 0; i < width * height; ++i) {
-      *pixels = ColorRGB(pixels->red / x, pixels->green / x,
-                         pixels->blue / x); // unpleasant
+      *pixels = ColorRGB(pixels->red / x, pixels->green / x, pixels->blue / x);
       pixels++;
     }
 
