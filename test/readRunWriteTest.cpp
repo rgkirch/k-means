@@ -1,8 +1,7 @@
-
-#include "copyImage.hpp"
 #include "gmock/gmock.h"
 #include "kmeans.hpp"
 #include "readImage.hpp"
+#include "readRunWrite.hpp"
 #include "gtest/gtest.h"
 
 using ::testing::DoubleEq;
