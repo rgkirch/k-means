@@ -24,7 +24,6 @@
     <script src="https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js"></script>
     <script src="prism.js"></script>
     <h1>i'm going to implement k-means to compress an image</h1>
-    my roommate described the idea to me the other day and said that I should try it myself
     <h2>k means is</h2>
     <p>an iterative algorithm for clustering</p>
     <h3>given</h3>
@@ -34,14 +33,13 @@
     <ol>randomly pick a starting location for each of the k cluster centers</ol>
     <ol>for each point in the graph determine which cluster it's closest to</ol>
     <ol>move each cluster point to the center of the points that belong to that cluster</ol>
-    <p>hmm, that doesn't seem to be a very clear explination</p>
 
     <h2>pictures and text</h2>
     <p>this is the picture that I want to compress</p>
     <p>it would be smaller if it used fewer colors</p>
     <p>i'm going to use k-means to determine what colors it should use</p>
     <a href="https://www.pexels.com/photo/close-up-view-colorful-candy-chocolate-65547/">
-        <img src="resources/mnms.jpg" alt="Photo by Caio Resende from Pexels" height=200>
+        <img src="resources/mnms-tiny.jpg" alt="Photo by Caio Resende from Pexels" height=200>
     </a>
 
     <h3>I wonder if i can make a basic scatter plot</h3>
@@ -61,9 +59,9 @@
         </pre>
         <img height=300 src="resources/k_means.1.png" />
     </div>
-    <p>it looks like i can</p>
 
     <h3>i wonder if i can add colors to the points</h3>
+    <p>i'll need this to show which cluster a point belongs to</p>
     <div class="code-image-pair">
 
         <pre class="line-numbers">
@@ -83,17 +81,16 @@
         </pre>
         <img src="resources/k_means.2.png" height=300/>
     </div>
-    <p>it looks like i can</p>
 
     <h3>i wonder if i can plot in 3d</h3>
+    <p>i'll to plot the points from the picture in 3d with an axis for each color component in an RGB pixel</p>
     <div class="code-image-pair">
 
         <pre class="line-numbers" data-src="src/first_3d.py">
     </pre>
         <img src="resources/k_means.3.png" height=300/>
     </div>
-    <p>it looks like i can</p>
-    <p>I don't know what the 111 is for though</p>
+    <p>I don't know what the 111 is for</p>
 
     <h3>100 points, the rendering lags on my computer</h3>
     <div class="code-image-pair">
@@ -108,24 +105,35 @@
     <p>i do this a bunch of times and stitch the pics together into a gif</p>
     <div class="code-image-pair">
 
-        <pre class="line-numbers" data-src="src/render_offline.py">
-</pre>
-        <img src="resources/plotPics.9.gif" width=400/>
-    </div>
-    <p>this is how I stitched the pics together into a gif</p>
-
-    <pre class="line-numbers">
-        <code class="language-bash">
-convert -delay 10 *.png plotPics9.gif
-</code>
-</pre>
-
-    <h3>better</h3>
-    <p>the previous example has a bug where I'm still using degrees instead of radians for the view rotation so it doesn't go
-        in a circle but more of an oval</p>
-    <div class="code-image-pair">
-
-        <pre class="line-numbers" data-src="src/better.py">
+        <pre class="line-numbers">
+            <code class="language-python">
+                    import subprocess
+                    import math
+                    from numpy.random import random
+                    
+                    import matplotlib
+                    matplotlib.use(&#x27;Agg&#x27;)
+                    
+                    from matplotlib import pyplot as plt
+                    from mpl_toolkits.mplot3d import Axes3D
+                    
+                    fig = plt.figure()
+                    ax = fig.add_subplot(111, projection=&#x27;3d&#x27;)
+                    
+                    precision = 2
+                    rotationScale = 4
+                    length = 30
+                    xs = random(length)
+                    ys = random(length)
+                    zs = random(length)
+                    ax.scatter(xs, ys, zs)
+                    steps = [x &#x2F; precision for x in range(int(2*math.pi*precision))]
+                    for i,r in enumerate(steps):
+                        view_init_x = 30 + math.sin(r) * rotationScale
+                        view_init_y = 30 + math.cos(r+math.pi) * rotationScale
+                        ax.view_init(view_init_x, view_init_y)
+                        fig.savefig(&#x27;&#x2F;tmp&#x2F;plotPic{:04d}.png&#x27;.format(i))
+            </code>
 </pre>
         <img src="resources/plotPics.11.gif" height=300/>
     </div>
