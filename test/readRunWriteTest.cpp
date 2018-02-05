@@ -38,3 +38,12 @@ TEST(copyImage, one) {
   }
   ASSERT_EQ(data, data2);
 }
+
+TEST(copyImage, two) {
+  std::vector<char> data;
+  std::string geometry;
+  std::tie(data, geometry) =
+      readImage("/mnt/c/Users/richie/Documents/github/k-means/"
+                "resources/mnms-tiny.jpg");
+  writeImage(data, geometry, "mnms-tiny-copy-65536.jpg");
+}
