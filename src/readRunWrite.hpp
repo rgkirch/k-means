@@ -8,25 +8,35 @@ using namespace Magick;
 using std::cout;
 using std::endl;
 
-void writeImage(std::vector<auto> data, std::string geometry,
-                std::string targetFileName, unsigned channelDepth) {
+void writeImage(std::vector<char> data, std::string geometry,
+                std::string targetFileName) {
   InitializeMagick("");
-  Image image(geometry, Color("white"));
-  image.modifyImage();
+  // std::cout << Blob blob((void *)&data[0], data.size());
+  // Image image(geometry, "white");
   try {
-    auto width = image.columns();
-    auto height = image.rows();
-    PixelPacket *pixels = image.getPixels(0, 0, width, height);
-    double dividend = std::pow(2, channelDepth);
-    for (int i = 0; i < width * height; i++) {
-      *pixels = ColorRGB(data[i * 3] / dividend, data[i * 3 + 1] / dividend,
-                         data[i * 3 + 2] / dividend);
-      pixels++;
-    }
-    image.syncPixels();
+    Geometry g(geometry);
+    // Image image(blob, geometry, "RGB");
+    Image image(g.width(), g.height(), "RGB", CharPixel, (void *)&data[0]);
+    // image.modifyImage();
+    // auto width = image.columns();
+    // auto height = image.rows();
+    // PixelPacket *pixels = image.getPixels(0, 0, width, height);
+    // std::cout << "write " << (int)data[0] << std::endl;
+    // std::cout << "write scaled " << ScaleCharToQuantum(data[0]) << std::endl;
+    // for (int i = 0; i < width * height; i++) {
+    //   // *pixels = ColorRGB(data[i * 3] / 256.0, data[i * 3 + 1] / 256.0,
+    //   //  data[i * 3 + 2] / 256.0);
+    //   pixels->red = ScaleCharToQuantum(data[i * 3]);
+    //   pixels->green = ScaleCharToQuantum(data[i * 3 + 1]);
+    //   pixels->blue = ScaleCharToQuantum(data[i * 3 + 2]);
+    //   pixels++;
+    // }
+    // image.syncPixels();
     image.write(targetFileName.c_str());
   } catch (Exception &error_) {
-    cout << "Caught exception: " << error_.what() << endl;
+    cout << "Caught exception in write image: " << error_.what() << endl;
+    abort();
+    exit(1);
   }
 }
 
@@ -53,6 +63,47 @@ void printDepth(std::string sourceFileName) {
 }
 
 std::tuple<std::vector<char>, std::string>
+readImage2(std::string sourceFileName) {
+  InitializeMagick("");
+  // Blob blob;
+  Image image(sourceFileName.c_str());
+  // image.magick("JPEG");
+  // image.write(&blob);
+  // return blob.data();
+  std::string geometry;
+  std::vector<char> data;
+  try {
+    auto width = image.columns();
+    auto height = image.rows();
+    char *buffer = (char *)malloc(width * height);
+    image.write(0, 0, width, height, "RGB", CharPixel, buffer);
+    for (int i = 0; i < width * height; i++) {
+      data.push_back(buffer[i]);
+    }
+    delete buffer;
+    //   image.read(sourceFileName.c_str());
+    //   PixelPacket *pixels = image.getPixels(0, 0, width, height);
+    //   std::cout << "read  " << pixels->red << std::endl;
+    //   std::cout << "read scaled  " << (int)ScaleQuantumToChar(pixels->red)
+    //             << std::endl;
+    //   data.reserve(width * height);
+    //   // std::transform(pixels, pixels + width * height,
+    //   // std::back_inserter(data));
+    //   // std::cout << "depth " << image.depth() << std::endl;
+    //   for (int i = 0; i < width * height; i++) {
+    //     data.push_back(ScaleQuantumToChar(pixels[i].red));
+    //     data.push_back(ScaleQuantumToChar(pixels[i].green));
+    //     data.push_back(ScaleQuantumToChar(pixels[i].blue));
+    //   }
+    geometry.append(std::to_string(width));
+    geometry.append("x");
+    geometry.append(std::to_string(height));
+  } catch (Exception &error_) {
+    cout << "Caught exception in read image: " << error_.what() << endl;
+  }
+  return std::make_tuple(data, geometry);
+}
+std::tuple<std::vector<char>, std::string>
 readImage(std::string sourceFileName) {
   InitializeMagick("");
   Image image;
@@ -63,20 +114,23 @@ readImage(std::string sourceFileName) {
     auto width = image.columns();
     auto height = image.rows();
     PixelPacket *pixels = image.getPixels(0, 0, width, height);
+    std::cout << "read  " << pixels->red << std::endl;
+    std::cout << "read scaled  " << (int)ScaleQuantumToChar(pixels->red)
+              << std::endl;
     data.reserve(width * height);
     // std::transform(pixels, pixels + width * height,
     // std::back_inserter(data));
+    // std::cout << "depth " << image.depth() << std::endl;
     for (int i = 0; i < width * height; i++) {
-      data.push_back((char)(pixels->red / 65535.0 * 255));
-      data.push_back((char)(pixels->green / 65535.0 * 255));
-      data.push_back((char)(pixels->blue / 65535.0 * 255));
-      pixels++;
+      data.push_back(ScaleQuantumToChar(pixels[i].red));
+      data.push_back(ScaleQuantumToChar(pixels[i].green));
+      data.push_back(ScaleQuantumToChar(pixels[i].blue));
     }
     geometry.append(std::to_string(width));
     geometry.append("x");
     geometry.append(std::to_string(height));
   } catch (Exception &error_) {
-    cout << "Caught exception: " << error_.what() << endl;
+    cout << "Caught exception in read image: " << error_.what() << endl;
   }
   return std::make_tuple(data, geometry);
 }
@@ -113,5 +167,5 @@ void mainKMeans(int numColors, int fileNumber) {
   targetFileName.append("/mnms-");
   targetFileName.append(fileNumberBuffer);
   targetFileName.append(".jpg");
-  writeImage(targetData, geometry, targetFileName, 8);
+  writeImage(targetData, geometry, targetFileName);
 }

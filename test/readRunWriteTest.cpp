@@ -24,26 +24,26 @@ TEST(copyImage, one) {
   std::tie(data, geometry) =
       readImage("/mnt/c/Users/richie/Documents/github/k-means/"
                 "resources/mnms-tiny.jpg");
-  writeImage(data, geometry, genFileName(0), 8);
+  writeImage(data, geometry, genFileName(0));
 
   std::vector<char> data2;
   std::string geometry2;
   for (int k = 0; k < 20; k++) {
     for (int i = 0; i < 20; i++) {
       std::tie(data2, geometry2) = readImage(genFileName(k));
-      writeImage(data2, geometry2, genFileName(k), 8);
+      writeImage(data2, geometry2, genFileName(k));
     }
     std::tie(data2, geometry2) = readImage(genFileName(k));
-    writeImage(data2, geometry2, genFileName(k + 1), 8);
+    writeImage(data2, geometry2, genFileName(k + 1));
   }
   ASSERT_EQ(data, data2);
 }
 
-TEST(copyImage, two) {
-  std::vector<char> data;
-  std::string geometry;
-  std::tie(data, geometry) =
-      readImage("/mnt/c/Users/richie/Documents/github/k-means/"
-                "resources/mnms-tiny.jpg");
-  writeImage(data, geometry, "mnms-tiny-copy-65536.jpg");
-}
+// TEST(copyImage, two) {
+//   std::vector<char> data;
+//   std::string geometry;
+//   std::tie(data, geometry) =
+//       readImage("/mnt/c/Users/richie/Documents/github/k-means/"
+//                 "resources/mnms-tiny.jpg");
+//   writeImage(data, geometry, "mnms-tiny-copy-test.jpg");
+// }
