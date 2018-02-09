@@ -20,21 +20,21 @@ TEST(copyImage, one) {
     return baseFileName;
   };
   std::vector<char> data;
-  std::string geometry;
-  std::tie(data, geometry) =
+  unsigned width;
+  unsigned height;
+  std::tie(width, height, data) =
       readImage("/mnt/c/Users/richie/Documents/github/k-means/"
                 "resources/mnms-tiny.jpg");
-  writeImage(data, geometry, genFileName(0));
+  writeImage(data.data(), width, height, genFileName(0));
 
   std::vector<char> data2;
-  std::string geometry2;
   for (int k = 0; k < 20; k++) {
     for (int i = 0; i < 20; i++) {
-      std::tie(data2, geometry2) = readImage(genFileName(k));
-      writeImage(data2, geometry2, genFileName(k));
+      std::tie(width, height, data2) = readImage(genFileName(k));
+      writeImage(data2.data(), width, height, genFileName(k));
     }
-    std::tie(data2, geometry2) = readImage(genFileName(k));
-    writeImage(data2, geometry2, genFileName(k + 1));
+    std::tie(width, height, data2) = readImage(genFileName(k));
+    writeImage(data2.data(), width, height, genFileName(k + 1));
   }
   ASSERT_EQ(data, data2);
 }

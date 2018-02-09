@@ -8,35 +8,14 @@ using namespace Magick;
 using std::cout;
 using std::endl;
 
-void writeImage(std::vector<char> data, std::string geometry,
+void writeImage(char *data, unsigned width, unsigned height,
                 std::string targetFileName) {
   InitializeMagick("");
-  // std::cout << Blob blob((void *)&data[0], data.size());
-  // Image image(geometry, "white");
   try {
-    Geometry g(geometry);
-    // Image image(blob, geometry, "RGB");
-    Image image(g.width(), g.height(), "RGB", CharPixel, (void *)&data[0]);
-    // image.modifyImage();
-    // auto width = image.columns();
-    // auto height = image.rows();
-    // PixelPacket *pixels = image.getPixels(0, 0, width, height);
-    // std::cout << "write " << (int)data[0] << std::endl;
-    // std::cout << "write scaled " << ScaleCharToQuantum(data[0]) << std::endl;
-    // for (int i = 0; i < width * height; i++) {
-    //   // *pixels = ColorRGB(data[i * 3] / 256.0, data[i * 3 + 1] / 256.0,
-    //   //  data[i * 3 + 2] / 256.0);
-    //   pixels->red = ScaleCharToQuantum(data[i * 3]);
-    //   pixels->green = ScaleCharToQuantum(data[i * 3 + 1]);
-    //   pixels->blue = ScaleCharToQuantum(data[i * 3 + 2]);
-    //   pixels++;
-    // }
-    // image.syncPixels();
+    Image image(width, height, "RGB", CharPixel, (void *)data);
     image.write(targetFileName.c_str());
   } catch (Exception &error_) {
     cout << "Caught exception in write image: " << error_.what() << endl;
-    abort();
-    exit(1);
   }
 }
 
@@ -62,57 +41,37 @@ void printDepth(std::string sourceFileName) {
   std::cout << "modulus depth " << image.modulusDepth() << std::endl;
 }
 
-std::tuple<std::vector<char>, std::string>
+std::tuple<unsigned, unsigned, std::vector<char>>
 readImage2(std::string sourceFileName) {
   InitializeMagick("");
-  // Blob blob;
-  Image image(sourceFileName.c_str());
-  // image.magick("JPEG");
-  // image.write(&blob);
-  // return blob.data();
   std::string geometry;
   std::vector<char> data;
+  Image image(sourceFileName.c_str());
+  auto width = image.columns();
+  auto height = image.rows();
   try {
-    auto width = image.columns();
-    auto height = image.rows();
-    char *buffer = (char *)malloc(width * height);
-    image.write(0, 0, width, height, "RGB", CharPixel, buffer);
-    for (int i = 0; i < width * height; i++) {
-      data.push_back(buffer[i]);
-    }
-    delete buffer;
-    //   image.read(sourceFileName.c_str());
-    //   PixelPacket *pixels = image.getPixels(0, 0, width, height);
-    //   std::cout << "read  " << pixels->red << std::endl;
-    //   std::cout << "read scaled  " << (int)ScaleQuantumToChar(pixels->red)
-    //             << std::endl;
-    //   data.reserve(width * height);
-    //   // std::transform(pixels, pixels + width * height,
-    //   // std::back_inserter(data));
-    //   // std::cout << "depth " << image.depth() << std::endl;
-    //   for (int i = 0; i < width * height; i++) {
-    //     data.push_back(ScaleQuantumToChar(pixels[i].red));
-    //     data.push_back(ScaleQuantumToChar(pixels[i].green));
-    //     data.push_back(ScaleQuantumToChar(pixels[i].blue));
-    //   }
-    geometry.append(std::to_string(width));
-    geometry.append("x");
-    geometry.append(std::to_string(height));
+    data.resize(width * height);
+    // char *buffer = (char *)malloc(width * height);
+    image.write(0, 0, width, height, "RGB", CharPixel, data.data());
+    // for (int i = 0; i < width * height; i++) {
+    //   data.push_back(buffer[i]);
+    // }
+    // delete buffer;
   } catch (Exception &error_) {
     cout << "Caught exception in read image: " << error_.what() << endl;
   }
-  return std::make_tuple(data, geometry);
+  return std::make_tuple(width, height, data);
 }
-std::tuple<std::vector<char>, std::string>
+std::tuple<unsigned, unsigned, std::vector<char>>
 readImage(std::string sourceFileName) {
   InitializeMagick("");
   Image image;
   std::vector<char> data;
   std::string geometry;
+  image.read(sourceFileName.c_str());
+  auto width = image.columns();
+  auto height = image.rows();
   try {
-    image.read(sourceFileName.c_str());
-    auto width = image.columns();
-    auto height = image.rows();
     PixelPacket *pixels = image.getPixels(0, 0, width, height);
     std::cout << "read  " << pixels->red << std::endl;
     std::cout << "read scaled  " << (int)ScaleQuantumToChar(pixels->red)
@@ -126,13 +85,10 @@ readImage(std::string sourceFileName) {
       data.push_back(ScaleQuantumToChar(pixels[i].green));
       data.push_back(ScaleQuantumToChar(pixels[i].blue));
     }
-    geometry.append(std::to_string(width));
-    geometry.append("x");
-    geometry.append(std::to_string(height));
   } catch (Exception &error_) {
     cout << "Caught exception in read image: " << error_.what() << endl;
   }
-  return std::make_tuple(data, geometry);
+  return std::make_tuple(width, height, data);
 }
 
 void mainKMeans(int numColors, int fileNumber) {
@@ -141,7 +97,9 @@ void mainKMeans(int numColors, int fileNumber) {
                                "resources/mnms-tiny.jpg";
   std::vector<char> sourceData;
   std::string geometry;
-  std::tie(sourceData, geometry) = readImage(sourceFileName);
+  unsigned width;
+  unsigned height;
+  std::tie(width, height, sourceData) = readImage(sourceFileName);
   std::vector<Point<3>> points;
   for (int i = 0; i < sourceData.size(); i += 3) {
     Point<3> pt{sourceData[i], sourceData[i + 1], sourceData[i + 2]};
@@ -167,5 +125,5 @@ void mainKMeans(int numColors, int fileNumber) {
   targetFileName.append("/mnms-");
   targetFileName.append(fileNumberBuffer);
   targetFileName.append(".jpg");
-  writeImage(targetData, geometry, targetFileName);
+  writeImage(targetData.data(), width, height, targetFileName);
 }
