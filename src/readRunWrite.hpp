@@ -44,24 +44,19 @@ void printDepth(std::string sourceFileName) {
 std::tuple<unsigned, unsigned, std::vector<char>>
 readImage2(std::string sourceFileName) {
   InitializeMagick("");
-  std::string geometry;
   std::vector<char> data;
   Image image(sourceFileName.c_str());
   auto width = image.columns();
   auto height = image.rows();
   try {
     data.resize(width * height);
-    // char *buffer = (char *)malloc(width * height);
     image.write(0, 0, width, height, "RGB", CharPixel, data.data());
-    // for (int i = 0; i < width * height; i++) {
-    //   data.push_back(buffer[i]);
-    // }
-    // delete buffer;
   } catch (Exception &error_) {
     cout << "Caught exception in read image: " << error_.what() << endl;
   }
   return std::make_tuple(width, height, data);
 }
+
 std::tuple<unsigned, unsigned, std::vector<char>>
 readImage(std::string sourceFileName) {
   InitializeMagick("");
