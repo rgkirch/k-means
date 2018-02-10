@@ -131,14 +131,20 @@ auto initialClusterPoints(unsigned long k, std::vector<Point<n>> points) {
 }
 
 template <long unsigned n>
-auto runKMeans(unsigned long k, std::vector<Point<n>> points) {
+auto runKMeansWithTheseInitialClusterPoints(
+    unsigned long k, std::vector<Point<n>> points,
+    newClusterPoints std::vector<Point<n>>) {
   if (points.size() < k)
     throw std::logic_error("k must not be smaller than the number of points");
-  auto newClusterPoints = initialClusterPoints(k, points);
   decltype(newClusterPoints) clusterPoints;
   for (int i = 1; i > 0 && clusterPoints != newClusterPoints; i++) {
     std::swap(clusterPoints, newClusterPoints);
     newClusterPoints = iterateKMeans(points, clusterPoints);
   }
   return newClusterPoints;
+}
+template <long unsigned n>
+auto runKMeans(unsigned long k, std::vector<Point<n>> points) {
+  auto newClusterPoints = initialClusterPoints(k, points);
+  return runKMeansWithTheseInitialClusterPoints(k, points, newClusterPoints);
 }

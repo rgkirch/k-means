@@ -1,6 +1,13 @@
-cmake_minimum_required(VERSION 3.6)
+cmake_minimum_required(VERSION 3.9)
 
 project(kmeans)
+
+find_package(ImageMagick COMPONENTS Magick++)
+include_directories(${ImageMagick_INCLUDE_DIRS})
+add_definitions( -DMAGICKCORE_QUANTUM_DEPTH=8 )
+add_definitions( -DMAGICKCORE_HDRI_ENABLE=0 )
+
+
 
 #include_directories(src)
 #add_subdirectory(src)

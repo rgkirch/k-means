@@ -4,3 +4,6 @@ debug/*
 src/kmeans.hpp.gch
 src/a.out
 resources/test
+lib
+*.jpg
+

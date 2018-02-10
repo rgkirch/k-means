@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "debug readImage",
+            "name": "debug test",
             "type": "cppdbg",
             "request": "launch",
-            "program": "/mnt/c/Users/richie/Documents/github/k-means/build/test/readImageTest",
+            "program": "/mnt/c/Users/richie/Documents/github/k-means/build/test/readRunWriteTest",
             "args": [],
-            "stopAtEntry": false,
+            "stopAtEntry": true,
             "cwd": "/mnt/c/Users/richie/Documents/github/k-means/build/test/",
             "environment": [],
             "externalConsole": true,
