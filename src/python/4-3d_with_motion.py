@@ -1,37 +1,40 @@
-import io
-import imageio
-import math
-from numpy.random import random
-from PIL import Image
 import matplotlib
 matplotlib.use('Agg')
-
-from matplotlib import pyplot as plt
+from PIL import Image
 from matplotlib import animation
+from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from numpy.random import random
+import imageio
+import io
+import math
+
+
+def scale_rotation_magnitude(x): return x * 4
+
+
+def f(frame_number):
+    frames_per_rotation = frames_per_second * seconds_per_rotation
+    fraction_of_rotation = frame_number / frames_per_rotation
+    radians = fraction_of_rotation * 2 * math.pi
+    view_init_x = 30 + scale_rotation_magnitude(math.sin(radians))
+    view_init_y = 30 + scale_rotation_magnitude(math.cos(radians+math.pi))
+    ax.view_init(view_init_x, view_init_y)
+
+
+number_of_points = 30
+number_of_rotations = 3
+seconds_per_rotation = 1
+frames_per_second = 30
 
 fig = plt.figure()
 plt.title("umm")
 ax = fig.add_subplot(111, projection='3d')
 
-buf = io.BytesIO()
-
-precision = 2
-rotationScale = 4
-length = 30
-xs = random(length)
-ys = random(length)
-zs = random(length)
+xs = random(number_of_points)
+ys = random(number_of_points)
+zs = random(number_of_points)
 ax.scatter(xs, ys, zs)
-steps = [x / precision for x in range(int(2*math.pi*precision))]
-with imageio.get_writer('whatever.gif', mode='I') as writer:
-    for i, r in enumerate(steps):
-        view_init_x = 30 + math.sin(r) * rotationScale
-        view_init_y = 30 + math.cos(r+math.pi) * rotationScale
-        ax.view_init(view_init_x, view_init_y)
-        fig.savefig(buf, format='png')
-        buf.seek(0)
-        im = Image.open(buf)
-        image = imageio.imread(im)
-        writer.append_data(image)
-        buf.close()
+anim = animation.FuncAnimation(
+    fig, f, frames=frames_per_second*seconds_per_rotation*number_of_rotations, interval=1/frames_per_second)
+anim.save('whatever.mp4', writer='imagemagick', fps=frames_per_second)
