@@ -42,7 +42,7 @@
         <img src="resources/mnms-tiny.jpg" alt="Photo by Caio Resende from Pexels" height=200>
     </a>
 
-    <h3>I wonder if i can make a basic scatter plot</h3>
+    <h3>basic scatter plot</h3>
     <div class="code-image-pair">
 
         <pre class="line-numbers">
@@ -60,7 +60,7 @@
         <img height=300 src="resources/k_means.1.png" />
     </div>
 
-    <h3>i wonder if i can add colors to the points</h3>
+    <h3>basic scatter plot with colors</h3>
     <p>i'll need this to show which cluster a point belongs to</p>
     <div class="code-image-pair">
 
@@ -82,8 +82,8 @@
         <img src="resources/k_means.2.png" height=300/>
     </div>
 
-    <h3>i wonder if i can plot in 3d</h3>
-    <p>i'll to plot the points from the picture in 3d with an axis for each color component in an RGB pixel</p>
+    <h3>plot in 3d</h3>
+    <p>i'll want to plot the points from the picture in 3d with an axis for each color component of an RGB pixel</p>
     <div class="code-image-pair">
 
         <pre class="line-numbers">
@@ -107,22 +107,16 @@
     </div>
     <p>I don't know what the 111 is for</p>
 
-    <h3>100 points, the rendering lags on my computer</h3>
-    <div class="code-image-pair">
-
-        <pre class="line-numbers" data-src="resources/render_lag.py">
-</pre>
-        <img src="resources/k_means.4.png" width=400/>
-    </div>
-
-    <h3>I wonder if I can render a little video offline instead of viewing it in real time</h3>
-    <p>I set the view angle for the plot and then save a screenshot to a file</p>
-    <p>i do this a bunch of times and stitch the pics together into a gif</p>
+    <h3>even with only 100 points, the ui is unresponsive</h3>
+    <p>it's not usefull to be able to interact with the plot when it takes multiple seconds to render a frame</p>
+    <p>the alternative is to render frames offline with enough change in the viewing angle so that I can still see it with some
+        perspective
+    </p>
+    <p>I think that the apparent motion gives the graph more depth that just a static image</p>
     <div class="code-image-pair">
 
         <pre class="line-numbers">
             <code class="language-python">
-                    import subprocess
                     import math
                     from numpy.random import random
                     
