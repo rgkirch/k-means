@@ -8,6 +8,7 @@ from numpy.random import random
 import imageio
 import io
 import math
+import sys
 
 
 def scale_rotation_magnitude(x): return x * 4
@@ -23,12 +24,12 @@ def f(frame_number):
 
 
 number_of_points = 30
-number_of_rotations = 3
+number_of_rotations = 1
 seconds_per_rotation = 1
 frames_per_second = 30
 
-fig = plt.figure()
 plt.title("umm")
+fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
 xs = random(number_of_points)
@@ -40,4 +41,4 @@ ax.set_zlim(0, 1)
 ax.scatter(xs, ys, zs)
 anim = animation.FuncAnimation(
     fig, f, frames=frames_per_second*seconds_per_rotation*number_of_rotations, interval=1/frames_per_second)
-anim.save('whatever.mp4', writer='imagemagick', fps=frames_per_second)
+anim.save(sys.argv[0][:-3]+'.mp4', writer='imagemagick', fps=frames_per_second)
