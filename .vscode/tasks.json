@@ -42,12 +42,50 @@
             "type": "shell",
             "presentation": {
                 "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "new"
+            },
+            "command": "make",
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^/mnt/c/Users/richie/Documents/github/k-means/(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "options": {
+                "cwd": "C:/Users/richie/Documents/github/k-means/debug"
+            }
+        },
+        {
+            "label": "make loop debug",
+            "type": "shell",
+            "isBackground": true,
+            "presentation": {
+                "echo": true,
                 "reveal": "always",
                 "focus": false,
                 "panel": "new"
             },
             "command": "while true; do make; done",
             "problemMatcher": {
+                "background": {
+                    "beginsPattern": {
+                        "regexp": "^.*Built target kmeansTest$"
+                    },
+                    "endsPattern": {
+                        "regexp": "^(\\[100%\\] Built target readRunWriteTest|make: \\*\\*\\* \\[all\\] Error 2)$"
+                    }
+                },
                 "owner": "cpp",
                 "fileLocation": [
                     "relative",
