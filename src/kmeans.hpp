@@ -73,8 +73,8 @@ unsigned long findClosestCluster(Point<n> point,
   std::transform(
       begin(clusterPoints), end(clusterPoints), std::back_inserter(distances),
       [&](Point<n> clusterPoint) { return distance(point, clusterPoint); });
-  auto maxDistanceIt = std::min_element(begin(distances), end(distances));
-  return std::distance(begin(distances), maxDistanceIt);
+  auto minDistanceIt = std::min_element(begin(distances), end(distances));
+  return std::distance(begin(distances), minDistanceIt);
 }
 
 template <long unsigned n>
@@ -134,8 +134,8 @@ template <long unsigned n>
 auto runKMeans(unsigned long k, std::vector<Point<n>> points) {
   if (points.size() < k)
     throw std::logic_error("k must not be smaller than the number of points");
-  auto clusterPoints = initialClusterPoints(k, points);
-  auto newClusterPoints = iterateKMeans(points, clusterPoints);
+  auto newClusterPoints = initialClusterPoints(k, points);
+  decltype(newClusterPoints) clusterPoints;
   for (int i = 1; i > 0 && clusterPoints != newClusterPoints; i++) {
     std::swap(clusterPoints, newClusterPoints);
     newClusterPoints = iterateKMeans(points, clusterPoints);

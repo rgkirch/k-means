@@ -16,7 +16,9 @@ include_directories(${ImageMagick_INCLUDE_DIRS})
 add_definitions( -DMAGICKCORE_QUANTUM_DEPTH=8 )
 add_definitions( -DMAGICKCORE_HDRI_ENABLE=0 )
 
-#add_executable(everythingTest everythingTest.cpp)
+add_executable(everythingTest everythingTest.cpp)
+target_link_libraries(everythingTest gtest gtest_main gmock ${ImageMagick_LIBRARIES})
+add_test(NAME everythingTestTest COMMAND everythingTest)
 
 add_executable(kmeansTest kmeansTest.cpp)
 target_link_libraries(kmeansTest gtest gtest_main gmock)
