@@ -26,7 +26,7 @@
             "command": "mkdir debug && cd debug && cmake -DCMAKE_BUILD_TYPE=Debug .."
         },
         {
-            "label": "copyImageTest release",
+            "label": "everythingTest release",
             "type": "shell",
             "presentation": {
                 "echo": true,
@@ -34,11 +34,11 @@
                 "focus": false,
                 "panel": "new"
             },
-            "command": "cd release && make copyImageTest && test/copyImageTest",
+            "command": "cd release && make everythingTest && test/everythingTest",
             "problemMatcher": "$gcc"
         },
         {
-            "label": "copyImageTest debug",
+            "label": "make debug",
             "type": "shell",
             "presentation": {
                 "echo": true,
@@ -46,10 +46,28 @@
                 "focus": false,
                 "panel": "new"
             },
-            "command": "cd debug && make copyImageTest && test/copyImageTest",
+            "command": "while true; do make; done",
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": [
+                    "relative",
+                    "${workspaceFolder}"
+                ],
+                "pattern": {
+                    "regexp": "^/mnt/c/Users/richie/Documents/github/k-means/(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            },
+            "options": {
+                "cwd": "C:/Users/richie/Documents/github/k-means/debug"
+            }
         },
         {
-            "label": "kmeansTest",
+            "label": "directoryIterate test",
             "type": "shell",
             "presentation": {
                 "echo": true,
@@ -57,7 +75,7 @@
                 "focus": false,
                 "panel": "new"
             },
-            "command": "cd debug && make kmeansTest && test/kmeansTest",
+            "command": "cd release && make directoryIteratorTest && test/directoryIteratorTest",
         },
         {
             "label": "kmeansTest release",
