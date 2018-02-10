@@ -22,9 +22,9 @@ TEST(copyImage, one) {
   std::vector<char> data;
   unsigned width;
   unsigned height;
-  std::tie(width, height, data) =
-      readImage("/mnt/c/Users/richie/Documents/github/k-means/"
-                "resources/mnms-tiny.jpg");
+  std::string sourceFileName = "/mnt/c/Users/richie/Documents/github/k-means/"
+                               "resources/mnms-tiny.jpg";
+  std::tie(width, height, data) = readImage(sourceFileName);
   writeImage(data.data(), width, height, genFileName(0));
 
   std::vector<char> data2;

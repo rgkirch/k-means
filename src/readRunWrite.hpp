@@ -58,23 +58,38 @@ readImage2(std::string sourceFileName) {
 }
 
 std::tuple<unsigned, unsigned, std::vector<char>>
+readImage3(std::string sourceFileName) {
+  InitializeMagick("");
+  Image image(sourceFileName.c_str());
+  std::vector<char> data;
+  auto width = image.columns();
+  auto height = image.rows();
+  try {
+    data.reserve(width * height);
+    for (int y = 0; y < width * height; y++) {
+      for (int x = 0; x < width * height; x++) {
+        auto c = image.pixelColor(x, y);
+        data.push_back(ScaleQuantumToChar(c.redQuantum()));
+        data.push_back(ScaleQuantumToChar(c.greenQuantum()));
+        data.push_back(ScaleQuantumToChar(c.blueQuantum()));
+      }
+    }
+  } catch (Exception &error_) {
+    cout << "Caught exception in read image: " << error_.what() << endl;
+  }
+  return std::make_tuple(width, height, data);
+}
+std::tuple<unsigned, unsigned, std::vector<char>>
 readImage(std::string sourceFileName) {
   InitializeMagick("");
   Image image;
   std::vector<char> data;
-  std::string geometry;
   image.read(sourceFileName.c_str());
   auto width = image.columns();
   auto height = image.rows();
   try {
     PixelPacket *pixels = image.getPixels(0, 0, width, height);
-    std::cout << "read  " << pixels->red << std::endl;
-    std::cout << "read scaled  " << (int)ScaleQuantumToChar(pixels->red)
-              << std::endl;
     data.reserve(width * height);
-    // std::transform(pixels, pixels + width * height,
-    // std::back_inserter(data));
-    // std::cout << "depth " << image.depth() << std::endl;
     for (int i = 0; i < width * height; i++) {
       data.push_back(ScaleQuantumToChar(pixels[i].red));
       data.push_back(ScaleQuantumToChar(pixels[i].green));
@@ -86,12 +101,9 @@ readImage(std::string sourceFileName) {
   return std::make_tuple(width, height, data);
 }
 
-void mainKMeans(int numColors, int fileNumber) {
-  cout << "fileNumber: " << fileNumber << " numColors: " << numColors << endl;
-  std::string sourceFileName = "/mnt/c/Users/richie/Documents/github/k-means/"
-                               "resources/mnms-tiny.jpg";
+void runKMeansOnImage(int k, std::string sourceFileName,
+                      std::string targetFileName) {
   std::vector<char> sourceData;
-  std::string geometry;
   unsigned width;
   unsigned height;
   std::tie(width, height, sourceData) = readImage(sourceFileName);
@@ -100,7 +112,7 @@ void mainKMeans(int numColors, int fileNumber) {
     Point<3> pt{sourceData[i], sourceData[i + 1], sourceData[i + 2]};
     points.push_back(pt);
   }
-  std::vector<Point<3>> clusterPoints = runKMeans(numColors, points);
+  std::vector<Point<3>> clusterPoints = runKMeans(k, points);
   std::vector<char> targetData;
   targetData.reserve(sourceData.size());
   for (auto point : points) {
@@ -110,15 +122,5 @@ void mainKMeans(int numColors, int fileNumber) {
     targetData.push_back((char)(color[1]));
     targetData.push_back((char)(color[2]));
   }
-  char numColorsBuffer[7];
-  snprintf(numColorsBuffer, 7, "%03d", numColors);
-  char fileNumberBuffer[7];
-  snprintf(fileNumberBuffer, 7, "%03d", fileNumber);
-  std::string targetFileName =
-      "/mnt/c/Users/richie/Documents/github/k-means/resources/";
-  targetFileName.append(numColorsBuffer);
-  targetFileName.append("/mnms-");
-  targetFileName.append(fileNumberBuffer);
-  targetFileName.append(".jpg");
   writeImage(targetData.data(), width, height, targetFileName);
 }
