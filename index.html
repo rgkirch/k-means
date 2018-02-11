@@ -121,20 +121,29 @@
         </video>
     </div>
 
-    <h3>plot the points from a picture</h3>
-    <div class=code-image-pair>
+    <h3>i changed the code to read from a file and ran it on the mnms picture</h3>
+    <p>i ran it on a low resolution version, 439x292</p>
+    <div class="code-image-pair">
 
-        <pre class="line-numbers" data-src="resources/open_a_pic_and_plot_points.py"></pre>
-        <img src="resources/plotPics.14.gif" height=400/>
+        <pre class="line-numbers" data-src="src/python/5-3d_motion_from_picture.py"></pre>
+        <video width="400" controls>
+            <source src="src/python/one_perspective_tiny_points.mp4" type="video/mp4" /> it's an mp4, get html5
+        </video>
+        <video width="400" controls>
+            <source src="src/python/mnms-tiny_full_rotation.mp4" type=" video/mp4 " /> it's an mp4, get html5
+        </video>
+        <p>The mnms picture has intense red, orange, blue, yellow, and green which show up in the picture. I can see a void
+            in the center of the volume.</p>
+        <p>This clip took 23 minutes to draw.</p>
     </div>
 
     <h3>gnuplot data from file</h3>
     <p>write the data to a file and open it with gnuplot</p>
     <p>it is way faster to generate the gif, it glitches though and I'm not sure why</p>
     <div class=code-image-pair>
-        <pre class="line-numbers" data-src="resources/gnu_plot_data_from_file.py"></pre>
-        <pre class="line-numbers" data-src="resources/k-means.gnuplot"></pre>
-        <img src="resources/rot3.gif" height=400/>
+        <pre class="line-numbers " data-src="resources/gnu_plot_data_from_file.py "></pre>
+        <pre class="line-numbers " data-src="resources/k-means.gnuplot "></pre>
+        <img src="resources/rot3.gif " height=400/>
     </div>
 
     <h3>do the calculation in c++</h3>
@@ -145,7 +154,7 @@
     <h4>step one. set up googletest</h4>
     <p>i want to jump into running the code as soon as i finish each piece so I'll use googletest to run my nugets of code</p>
     <pre>
-    <code class="language-bash">
+    <code class="language-bash ">
     mkdir build
     cd build
     cmake -DCMAKE_BUILD_TYPE=Debug ..
@@ -155,21 +164,21 @@
     </pre>
 
     <pre>
-    <code class="language-cpp">
-            #include "gtest/gtest.h"
-            #include "gmock/gmock.h"
-            #include "kmeans.hpp"
+    <code class="language-cpp ">
+            #include "gtest/gtest.h "
+            #include "gmock/gmock.h "
+            #include "kmeans.hpp "
             
             TEST(thisPasses, helloHello) {
-                ASSERT_EQ("hello", "hello");
+                ASSERT_EQ("hello ", "hello ");
             }
             TEST(thisFails,helloWorld) {
-                ASSERT_EQ("hello", "world");
+                ASSERT_EQ("hello ", "world ");
             }
     </code>
     </pre>
     <pre>
-    <code class="language-bash">
+    <code class="language-bash ">
         Running main() from gtest_main.cc
         [==========] Running 2 tests from 2 test cases.
         [----------] Global test environment set-up.
@@ -198,7 +207,7 @@
          1 FAILED TEST
     </code>
 </pre>
-    <pre class="language-cpp" data-src="src/kmeans.hpp"></pre>
+    <pre class="language-cpp " data-src="src/kmeans.hpp "></pre>
     <h3>graphics magick copy an image</h3>
     <p>i think i'm actually using graphics magick which just implemented the image magick api</p>
     <p>the goal was just to open a picture and read it's contents which was much more difficult than I expected</p>
@@ -206,7 +215,7 @@
         << 16 - 1) but when i write the pixel it must be in the range of 0 to 1</p>
             <p>I think that the range of the read value is determined by the bit depth</p>
             <p>writing it as a decimal in the range of 0 to 1 makes it agnostic of the bit depth</p>
-            <pre class="language-cpp">
+            <pre class="language-cpp ">
             <code>
 
                 #include &lt;Magick++.h&gt;
