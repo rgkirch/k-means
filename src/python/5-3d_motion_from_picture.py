@@ -26,7 +26,6 @@ number_of_rotations = 1
 seconds_per_rotation = 8
 frames_per_second = 30
 
-plt.title('umm')
 fig = plt.figure()
 image = Image.open(sys.argv[1])
 xs = image.getdata(0)
@@ -52,4 +51,3 @@ targetFile = sys.argv[0][:-3]+'_' + \
     '.mp4'
 anim.save(targetFile,
           writer='imagemagick', fps=frames_per_second, dpi=200)
-print('')
